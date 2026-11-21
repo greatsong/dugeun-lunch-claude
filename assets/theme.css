@@ -22,3 +22,8 @@
 
 /* 프롬프트 상자는 배민 주아체(Google Fonts의 Jua)로 — PPT 프롬프트 글꼴과 같게 (PD 결정 11-21) */
 .codewrap.prompt pre { font-family: "Jua", "BM JUA_OTF", "배달의민족 주아 OTF", var(--font); font-size: 1.04em; line-height: 1.75; letter-spacing: 0.01em; }
+
+/* 프롬프트 상자 가독성 (11-21): 밝은 바탕 + 짙은 글자 + 넓은 줄 간격 + 갈색 [대괄호] 칸 */
+.codewrap.prompt pre { background: #fffbef; color: #172b24; border: 2px solid #1d5d3d; font-size: 1.12em; line-height: 1.9; padding: 1.1rem 1.25rem; white-space: pre-wrap; word-break: keep-all; }
+.codewrap.prompt pre .blank { color: #9c4d31; font-weight: 700; background: #f6e7d8; border-radius: 4px; padding: 0 .15em; }
+.codewrap.prompt .label { background: #1d5d3d; }
