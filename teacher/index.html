@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="교사용: 급식 자료로 반찬 순위를 확인하고, 급식실에서 관찰한 문제로 팀 앱을 만드는 8차시 웹 교재입니다.">
+<title>교사용 목차 · 두근두근 급식실</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/theme.css">
+<style>
+.resource-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:14px}
+.resource{display:block;padding:21px 19px;border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);background:#fff}
+.resource strong{font-size:.95rem}
+.resource p{font-size:.85rem;line-height:1.65;color:var(--text-soft);margin:7px 0 0}
+.resource:hover,.resource:focus-visible{border-color:currentColor}
+.daymap{width:100%;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="inner">
+<a class="brand" href="index.html"><span class="chick" aria-hidden="true">🍱</span> 두근두근 <span class="a">급식실</span></a>
+<span class="spacer"></span>
+<a class="home" href="../index.html">학생용 대문 ↗</a>
+<span class="badge teacher">교사용</span>
+</div></div>
+
+<div class="wrap">
+<main>
+<span class="eyebrow">교사용 · 수업 진행과 연수</span>
+<h1>두근두근 급식실 <span class="a">교사용 목차</span></h1>
+<div class="under"></div>
+<p class="lead">학생 8차시 수업을 진행하는 선생님을 위한 페이지입니다. 학생에게는 학생용 대문 주소만 안내하세요.</p>
+
+<nav aria-labelledby="resources">
+<h2 id="resources">교사 자료 바로가기</h2>
+<div class="resource-grid">
+<a class="resource" href="orientation.html"><strong>개강 전 안내</strong><p>계정, AI 도구, 인증키와 급식 파일, 공개 범위를 수업 전에 준비합니다.</p></a>
+<a class="resource" href="#lessons"><strong>차시별 진행안</strong><p>아래 표의 교사용 차시명에서 시간표, 발문, 막히는 지점과 대응을 엽니다.</p></a>
+<a class="resource" href="../training/index.html"><strong>교원 연수 요약</strong><p>학생 역할로 실습하고 수업에 사용할 발문과 관찰 기준을 작성합니다.</p></a>
+<a class="resource" href="../index.html"><strong>학생용 대문</strong><p>학생이 보는 목차입니다. 수업 첫날 이 주소를 안내합니다.</p></a>
+<a class="resource" href="../appendix/index.html"><strong>부록</strong><p>나이스 문서 발췌, 오류 대처 방법, 공개 전 점검표와 선택 활동 안내입니다.</p></a>
+</div>
+</nav>
+
+<section aria-labelledby="lessons">
+<h2 id="lessons">8차시 수업 지도</h2>
+<p>1~4차시에는 첫 앱을 이어서 고쳐 급식 대시보드를 완성합니다. 5~8차시에는 팀이 도울 사람과 문제를 정합니다. 팀 앱에는 가설을 확인하는 데 필요한 경우에 급식 API를 사용합니다.</p>
+<table class="daymap">
+<thead>
+<tr><th scope="col">차시</th><th scope="col">교사용 차시명(진행안)</th><th scope="col">학생용 질문(학생 페이지)</th><th scope="col">남는 것</th></tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">공통 1</th>
+<td><a href="lesson01.html">바이브코딩으로 만드는 첫 급식 앱과 배포</a></td>
+<td><a href="../lesson01.html">우리 학교 급식으로 어떤 앱을 만들 수 있을까?</a></td>
+<td>짝의 휴대폰에서 바뀐 환영 문구를 확인한 앱 주소</td>
+</tr>
+<tr>
+<th scope="row">공통 2</th>
+<td><a href="lesson02.html">나이스 급식 API를 활용한 학교 검색과 월별 중식 조회</a></td>
+<td><a href="../lesson02.html">지난달 우리 학교 점심을 빠짐없이 불러왔을까?</a></td>
+<td>학교와 월을 확인한 날짜별 중식 표, 조회한 날짜 수와 건수</td>
+</tr>
+<tr>
+<th scope="row">공통 3</th>
+<td><a href="lesson03.html">반찬별 제공 일수 집계와 대시보드 시각화</a></td>
+<td><a href="../lesson03.html">지난달 우리 학교 급식에 가장 자주 나온 반찬은 무엇일까?</a></td>
+<td>반찬별 제공 일수 그래프와 원자료에서 확인한 1위 반찬의 제공 날짜</td>
+</tr>
+<tr>
+<th scope="row">공통 4</th>
+<td><a href="lesson04.html">디자인 씽킹의 사용자 관찰을 통한 대시보드 개선</a></td>
+<td><a href="../lesson04.html">친구는 설명 없이도 반찬 1위를 바로 찾을 수 있을까?</a></td>
+<td>친구가 한 행동이나 질문을 적은 기록, 한 곳을 고친 대시보드</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<th scope="row">팀 5</th>
+<td><a href="lesson05.html">디자인 씽킹의 공감과 문제 정의, 페르소나와 여정 지도</a></td>
+<td><a href="../lesson05.html">우리 학교 급식에서 어떤 문제를 골라 누구를 도울까?</a></td>
+<td>도울 사람, 네 단계의 여정, 가설, 사용성과 실제 도움의 판단 기준을 적은 팀 카드</td>
+</tr>
+<tr>
+<th scope="row">팀 6</th>
+<td><a href="lesson06.html">린 스타트업의 최소 기능 제품(MVP) 구현과 사용성 관찰</a></td>
+<td><a href="../lesson06.html">우리 앱의 첫 화면에는 어떤 정보와 버튼이 필요할까?</a></td>
+<td>핵심 기능 하나를 담은 팀 앱과 친구의 첫 사용 기록</td>
+</tr>
+<tr>
+<th scope="row">팀 7</th>
+<td><a href="lesson07.html">린 스타트업의 반복 개선과 사용성 재점검</a></td>
+<td><a href="../lesson07.html">고친 화면에서 새 친구는 혼자 해낼 수 있을까?</a></td>
+<td>한 곳을 고친 앱, 같은 과제로 비교한 수정 전후 관찰 기록</td>
+</tr>
+<tr>
+<th scope="row">팀 8</th>
+<td><a href="lesson08.html">팀 앱 완성과 짝 시연을 통한 핵심 기능 공유</a></td>
+<td><a href="../lesson08.html">우리가 완성한 앱으로 누가 무엇을 할 수 있을까?</a></td>
+<td>앱 주소, 시연한 동작과 화면 결과, 사용성 확인 결과, 현장에서 확인할 기준을 담은 제출 카드</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<details class="sample">
+    <summary>2·3차시에 사용할 급식 자료(학생 페이지와 같은 안내)</summary>
+    <p>먼저 나이스 인증키로 선택한 학교의 지난달 중식을 조회합니다. 키가 없거나 조회가 막히면 <a href="https://raw.githubusercontent.com/greatsong/dugeun-lunch-claude/main/data/danggok_lunch_202609.csv">선생님이 준비한 급식 파일(CSV)</a>을 불러옵니다. 파일을 사용한 표와 그래프에는 자료의 학교와 기간을 ‘당곡고등학교 · 2026년 9월 중식 20일’로 표시합니다.</p>
+    <p>파일의 세 열은 <code>MLSV_YMD</code>(날짜), <code>MMEAL_SC_NM</code>(끼니), <code>DDISH_NM</code>(메뉴)입니다. 한 끼의 메뉴는 <code>&lt;br/&gt;</code>로 구분합니다.</p>
+  </details>
+
+<h2>8차시 밖 선택 활동</h2>
+  <p>제출 카드에서 ‘도움이 되는가’를 판단할 기준을 꺼냅니다. 예를 들어 배식 시간을 알려 주는 앱이라면, 같은 장소에서 같은 시간 동안 배식 시간을 다시 묻는 횟수를 기록합니다. 앱을 사용하기 전과 후에 같은 조건으로 관찰합니다. 이름이나 학번 없이 횟수와 관찰 조건을 적고 무엇이 달라졌는지 선생님께 보고합니다.</p>
+
+  <div class="pager">
+<a class="next" href="orientation.html"><div class="dir">다음 →</div><div class="tt">개강 전 안내</div></a>
+</div>
+</main>
+</div>
+<footer class="foot">두근두근 급식실 · 교사용 목차</footer>
+</body>
+</html>
