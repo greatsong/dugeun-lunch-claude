@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2차시 · 지난달 우리 학교 점심을 빠짐없이 불러왔을까? · 두근두근 급식실</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <a class="brand" href="index.html"><span class="chick">🍱</span> 두근두근 <span class="a">급식실</span></a>
+  <span class="spacer"></span>
+  <a class="home" href="index.html">← 목차</a>
+  <span class="badge">학생용</span>
+</div></div>
+
+<div class="wrap">
+<main>
+  <span class="eyebrow">공통 수업 · 2차시</span>
+  <h1>지난달 우리 학교 점심을 <span class="a">빠짐없이 불러왔을까?</span></h1>
+  <div class="under"></div>
+
+  <p class="lead">지난달 점심을 조회했더니 날짜순으로 식단이 다섯 줄 나왔습니다. 첫날에 무엇을 먹었는지는 표에서 찾을 수 있습니다. 그런데 지난달에 급식을 제공한 날이 모두 5일이었는지는 어떻게 알 수 있을까요? 오늘은 지난 시간에 만든 앱에 학교 검색과 중식 조회를 추가하고, 나이스가 알려 준 전체 건수와 내가 받은 자료를 비교합니다.</p>
+
+  <div class="make-banner">
+    <div class="t">🎯 오늘 하는 것</div>
+    <ul>
+      <li>학교 이름으로 검색한 뒤 지역을 확인하고, 지난달 중식을 날짜순으로 불러옵니다.</li>
+      <li>앱 설정에 인증키를 저장하고 같은 학교의 식단을 다시 조회합니다. 키가 없거나 조회가 막히면 선생님이 준비한 자료를 불러옵니다.</li>
+      <li>표에서 하루의 메뉴를 찾아보고, 어느 학교의 어느 달 자료를 몇 건 받았는지 기록합니다.</li>
+    </ul>
+  </div>
+
+  <h2>0. 오늘의 목표</h2>
+  <ul>
+    <li>학교를 찾을 때와 급식을 조회할 때 앱이 나이스에 보내는 조건을 설명할 수 있습니다.</li>
+    <li>인증키를 공개하지 않고 앱에서 사용하며, 화면에서 자료의 학교와 기간, 출처를 확인할 수 있습니다.</li>
+    <li>조회된 날짜 수와 전체 건수의 뜻을 구분하고, 받은 자료가 한 달치인지 판단할 수 있습니다.</li>
+  </ul>
+
+  <details class="sample">
+    <summary>지난 시간 앱이 없어요</summary>
+    <p>1차시에 배포한 앱이 있다면 GitHub 저장소의 <code>main.py</code>를 여세요. 우리 반 인사말을 고쳤다면 그 파일로 이어서 작업하세요. 파일이 없다면 아래 두 파일로 시작하세요. 첫 배포가 필요하면 <a href="lesson01.html#deploy">1차시의 첫 배포</a>를 따라 하세요.</p>
+    <div class="codewrap code"><span class="label"><button type="button" class="fname">main.py</button></span><button type="button" class="copy-btn">복사</button><pre>import streamlit as st
+st.title("두근두근 급식실")
+if st.button("급식실 열기"):
+    st.write("우리 학교 급식실에 오신 걸 환영합니다!")
+</pre></div>
+    <div class="codewrap code"><span class="label"><button type="button" class="fname">requirements.txt</button></span><button type="button" class="copy-btn">복사</button><pre>streamlit</pre></div>
+    <p>지난 시간 AI 대화를 찾을 수 없다면 새 대화를 여세요. 아래 첫 문장을 복사하고, 그 아래에 현재 <code>main.py</code>의 내용을 붙이세요. 이어서 <a href="#practice">2절의 프롬프트와 나이스 문서 발췌</a>까지 넣은 뒤 한 번에 보내세요.</p>
+    <div class="codewrap prompt"><span class="label">새 대화의 첫 문장</span><button type="button" class="copy-btn">복사</button><pre>내 현재 main.py는 아래와 같아. 이 파일에 이어서 아래에서 요청하는 기능만 더해 줘.</pre></div>
+  </details>
+
+  <h2>1. API로 급식을 어떻게 조회합니까?</h2>
+  <p>나이스 홈페이지에서는 사람이 학교를 고르고 식단을 읽습니다. 우리가 만든 앱도 나이스에서 식단을 받을 수 있습니다. 이때 사용하는 <b>API</b>는 프로그램끼리 자료를 주고받는 방법을 정한 약속입니다. 앱이 정해진 주소로 학교와 기간 같은 조건을 보내면 나이스는 약속된 형식으로 결과를 돌려줍니다. 오늘 앱은 두 번에 걸쳐 필요한 자료를 찾습니다.</p>
+
+  <table class="daymap">
+    <thead><tr><th scope="col">조회 순서</th><th scope="col">앱이 보내는 조건</th><th scope="col">응답에서 읽을 내용</th></tr></thead>
+    <tbody>
+      <tr><td><b>먼저 학교를 찾습니다.</b></td><td>학교 이름을 보냅니다. 이름의 일부로도 검색할 수 있습니다.</td><td>학교명과 지역을 보고 학교를 고릅니다. 앱은 선택한 학교의 교육청 코드와 학교 코드를 읽습니다.</td></tr>
+      <tr><td><b>그 학교의 점심을 찾습니다.</b></td><td>두 코드와 식사 종류인 중식, 한국 시간 기준 지난달 1일부터 말일까지의 날짜를 보냅니다.</td><td>조건에 맞는 전체 건수와 이번에 받은 식단 목록을 읽습니다. 식단에는 급식일과 그날의 메뉴가 들어 있습니다.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>응답에서 날짜와 메뉴를 찾아보세요</h3>
+  <p>아래는 당곡고등학교의 2026년 6월 2일 중식 응답에서 날짜와 메뉴 일부를 남긴 예입니다. 나이스는 각 값에 항목 이름이 붙은 <b>JSON</b> 형식으로 응답할 수 있습니다. <code>head</code> 안의 <code>list_total_count</code>는 조건에 맞는 전체 건수이고, <code>row</code>는 실제로 받은 식단 목록입니다.</p>
+  <div class="codewrap code"><span class="label">하루 중식 응답의 생김새 · 항목과 메뉴 일부 발췌</span><pre>{
+  "mealServiceDietInfo": [
+    { "head": [ { "list_total_count": 1 } ] },
+    { "row": [
+      {
+        "MLSV_YMD": "20260602",
+        "DDISH_NM": "친환경현미밥 &lt;br/&gt;오징어무국 (5.6.13.17)&lt;br/&gt;두부조림 (5.6.13)"
+      }
+    ] }
+  ]
+}</pre></div>
+  <p><code>MLSV_YMD</code>의 여덟 자리를 연도, 월, 일로 나누어 읽어 보세요. <code>DDISH_NM</code> 안의 <code>&lt;br/&gt;</code>는 서로 다른 메뉴를 구분합니다. 예를 들어 오징어무국과 두부조림은 같은 날의 메뉴이므로 앱에서는 같은 날짜의 한 행에 표시합니다.</p>
+
+  <h2 id="practice">2. 지난달 중식 조회를 추가합니다</h2>
+  <ol class="steps">
+    <li>
+      <span class="st">① 급식 조회를 요청하세요</span>
+      <p>1차시 앱을 만든 AI 대화를 여세요. 아래 프롬프트를 복사하고 마지막 줄 다음에서 줄을 바꾸세요. 두 번째 상자의 문서 발췌도 붙인 뒤 함께 보내세요. 발췌에는 AI가 학교 이름과 급식일을 어느 항목에서 읽어야 하는지 적혀 있습니다.</p>
+      <div class="codewrap prompt"><span class="label">① 급식 조회 프롬프트</span><button type="button" class="copy-btn">복사</button><pre>지금 앱에 급식 조회를 더해 줘. 학교 이름을 입력하면 학교기본정보로 학교를 찾아 지역과 함께 고를 수 있게 해 줘. 기본값은 당곡고등학교야.
+고른 학교의 교육청 코드와 학교 코드로 한국 시간 기준 지난달 1일부터 말일까지 중식을 조회해서 날짜와 메뉴를 날짜순 표로 보여 줘. 조회된 날짜 수와 응답의 전체 건수도 함께 보여 줘.
+Secrets에 NEIS_API_KEY가 있으면 요청에 KEY로 넣고 한 번에 100건까지 받아 줘. 키가 없으면 '키 없이 최대 5건만 보입니다'라고 알려 줘. 키는 코드에 적지 말고 Secrets에서만 읽어 줘.
+조회가 막히거나 키가 없을 때 고를 수 있도록 '선생님 준비 자료 불러오기' 선택지도 만들어 줘. 파일 주소는 https://raw.githubusercontent.com/greatsong/dugeun-lunch-claude/main/data/danggok_lunch_202609.csv 이고, 열은 MLSV_YMD, MMEAL_SC_NM, DDISH_NM이며 메뉴는 &lt;br/&gt;로 나뉘어 있어. 이 자료를 쓸 때는 화면에 '당곡고등학교 · 2026년 9월 · 선생님 준비 자료'라고 표시해 줘.
+급식이 없다는 응답과 조회 오류는 다른 안내 문구로 보여 줘. 제목과 버튼은 그대로 두고, 고친 main.py 전체와 requirements.txt를 줘.</pre></div>
+
+      <div class="codewrap"><span class="label">① 프롬프트 끝에 붙이는 나이스 문서 발췌</span><button type="button" class="copy-btn">복사</button><pre>──── 아래는 나이스 교육정보 개방 포털 문서에서 복사한 부분 ────
+[학교기본정보] 요청 주소: https://open.neis.go.kr/hub/schoolInfo
+요청변수: Type=json · SCHUL_NM(학교 이름, 일부만 적어도 검색된다)
+응답 구조: schoolInfo의 두 번째 상자 안 row 목록에 학교별로
+  SCHUL_NM(학교명) · ATPT_OFCDC_SC_CODE(교육청 코드) · SD_SCHUL_CODE(학교 코드) · LCTN_SC_NM(지역)
+  ※ 조회 데이터가 없으면 RESULT의 CODE가 INFO-200이다. 인증키 없이 한 번에 5건까지 온다.
+[급식식단정보] 요청 주소: https://open.neis.go.kr/hub/mealServiceDietInfo
+요청변수: Type=json · ATPT_OFCDC_SC_CODE, SD_SCHUL_CODE(위에서 찾은 두 코드) · MMEAL_SC_CODE=2(중식) ·
+  MLSV_FROM_YMD, MLSV_TO_YMD(조회 시작일과 끝일, 하이픈 없는 여덟 자리) ·
+  pSize(한 번에 받을 행 수, 상한 1000) · pIndex(쪽 번호, 1부터)
+응답 구조: mealServiceDietInfo의 첫 번째 상자 head의 list_total_count에 조건에 맞는 전체 건수가 오고,
+  두 번째 상자 안 row 목록에 날짜별로
+  MLSV_YMD(급식일) · DDISH_NM(메뉴 전체 - &lt;br/&gt;로 구분되고, 메뉴 뒤 괄호 숫자는 알레르기 번호) · CAL_INFO(칼로리)
+  ※ 조회 데이터가 없으면 RESULT의 CODE가 INFO-200이다. 인증 오류 등 다른 CODE와 구분한다.
+  ※ 인증키가 없으면 pSize와 pIndex가 무시되어 언제나 첫 5건만 온다.</pre></div>
+      <p>GitHub에서 지난 시간 앱의 저장소를 열고 <code>main.py</code>와 <code>requirements.txt</code>를 각각 AI가 준 내용으로 바꾸어 저장하세요. 배포에 연결한 브랜치에 두 파일을 커밋한 뒤, 지난 시간에 사용한 <code>.streamlit.app</code> 주소를 여세요.</p>
+    </li>
+
+    <li id="screen-check">
+      <span class="st">② 화면에서 확인할 것</span>
+      <p>처음에 제목과 버튼만 보이면 <b>급식실 열기</b>를 누르세요. 지난 시간 버튼을 누른 뒤 인사말을 보았던 것처럼, AI가 조회 화면도 버튼을 누른 뒤에 표시하도록 만들 수 있습니다.</p>
+      <ul class="checklist">
+        <li><b>키를 넣기 전</b> ‘키 없이 최대 5건만 보입니다’라는 안내가 나옵니까? 이미 키를 저장한 앱에서는 바로 학교를 조회하세요.</li>
+        <li><b>나이스에서 조회</b>를 고르세요. 학교 이름의 기본값이 당곡고등학교입니까? 학교 선택 목록에서 이름과 지역을 확인하세요. 선택한 학교의 이름과 한국 시간 기준 지난달의 연도와 월이 표 위에 표시됩니까?</li>
+        <li>날짜가 이른 순서로 중식이 나옵니까? 하루를 골라 그날의 메뉴 두 가지를 읽어 보세요. <b>조회된 날짜 수</b>와 <b>응답의 전체 건수</b>를 찾아 각각 읽으세요. 두 수가 다르면 <a href="#count">4절</a>에서 받은 범위를 확인하세요.</li>
+        <li><b>선생님 준비 자료 불러오기</b>를 고르세요. 제목이 <b>당곡고등학교 · 2026년 9월 · 선생님 준비 자료</b>로 바뀌고 중식 20일의 표가 나옵니까? 9월 1일 행에서 참치야채비빔밥과 배추김치를 찾아보세요. 이 파일의 학교와 기간은 어느 학교를 검색했는지에 관계없이 같습니다.</li>
+      </ul>
+
+      <details class="sample">
+        <summary>선생님이 실행해 확인한 기준 코드 · main.py와 requirements.txt</summary>
+        <p class="mini">내 앱에서 확인하기 어려운 동작이 있으면 아래 두 파일과 비교하세요. 기준 코드로 실행하려면 각 상자의 내용을 표시된 파일 이름으로 따로 저장하세요.</p>
+        <div class="codewrap code"><span class="label"><button type="button" class="fname">main.py</button></span><button type="button" class="copy-btn">복사</button><pre>import csv
+import re
+from collections import defaultdict
+from datetime import datetime, timedelta
+from io import StringIO
+from zoneinfo import ZoneInfo
+
+import requests
+import streamlit as st
+from streamlit.errors import StreamlitSecretNotFoundError
+
+
+NEIS_URL = "https://open.neis.go.kr/hub"
+TEACHER_CSV = (
+    "https://raw.githubusercontent.com/greatsong/dugeun-lunch-claude/"
+    "main/data/danggok_lunch_202609.csv"
+)
+
+
+class LookupErrorNEIS(Exception):
+    pass
+
+
+def read_api_key():
+    try:
+        return st.secrets.get("NEIS_API_KEY", "").strip()
+    except StreamlitSecretNotFoundError:
+        return ""
+
+
+def last_month():
+    first_of_this_month = datetime.now(ZoneInfo("Asia/Seoul")).date().replace(day=1)
+    end = first_of_this_month - timedelta(days=1)
+    return end.replace(day=1), end
+
+
+def check_result(result):
+    code = result.get("CODE", "")
+    if code == "INFO-200":
+        return False
+    if code != "INFO-000":
+        raise LookupErrorNEIS(f"나이스 응답 코드를 확인해 주세요 ({code or '코드 없음'}).")
+    return True
+
+
+@st.cache_data(ttl=600, show_spinner=False)
+def fetch_neis(service, filters, api_key):
+    page_size = 100 if api_key else 5
+    params = {"Type": "json", "pSize": page_size, "pIndex": 1, **filters}
+    if api_key:
+        params["KEY"] = api_key
+
+    rows = []
+    while True:
+        try:
+            response = requests.get(f"{NEIS_URL}/{service}", params=params, timeout=12)
+            response.raise_for_status()
+            data = response.json()
+        except (requests.RequestException, ValueError):
+            # 요청 주소에 KEY가 포함될 수 있어 예외 원문은 화면에 표시하지 않는다.
+            raise LookupErrorNEIS("나이스 서버에 연결하거나 응답을 읽는 데 실패했어요.") from None
+
+        try:
+            if "RESULT" in data:
+                if not check_result(data["RESULT"]) and not rows:
+                    return [], 0
+                raise LookupErrorNEIS("요청한 목록을 끝까지 받지 못했어요.")
+
+            head = data[service][0]["head"]
+            for item in head:
+                if "RESULT" in item and not check_result(item["RESULT"]):
+                    if not rows:
+                        return [], 0
+                    raise LookupErrorNEIS("요청한 목록을 끝까지 받지 못했어요.")
+
+            total = int(next(item["list_total_count"] for item in head if "list_total_count" in item))
+            page = data[service][1]["row"]
+            if not isinstance(page, list) or (not page and len(rows) &lt; total):
+                raise LookupErrorNEIS("나이스가 보낸 목록이 불완전해요.")
+        except (KeyError, IndexError, TypeError, ValueError, StopIteration):
+            raise LookupErrorNEIS("나이스 응답에서 목록이나 전체 건수를 읽을 수 없어요.") from None
+
+        rows.extend(page)
+        if not api_key or len(rows) &gt;= total:
+            return rows, total
+        params["pIndex"] += 1
+
+
+@st.cache_data(ttl=600, show_spinner=False)
+def load_teacher_lunch():
+    response = requests.get(TEACHER_CSV, timeout=12)
+    response.raise_for_status()
+    reader = csv.DictReader(StringIO(response.content.decode("utf-8-sig")))
+    required = {"MLSV_YMD", "MMEAL_SC_NM", "DDISH_NM"}
+    if not required.issubset(reader.fieldnames or []):
+        raise ValueError("필수 열 누락")
+    return [row for row in reader if row["MMEAL_SC_NM"].strip() == "중식"]
+
+
+def show_menu(rows, count_label, total):
+    by_date = defaultdict(list)
+    for row in rows:
+        day = datetime.strptime(row["MLSV_YMD"].strip(), "%Y%m%d").date()
+        dishes = re.split(r"&lt;br\s*/?\s*&gt;", row["DDISH_NM"], flags=re.IGNORECASE)
+        by_date[day].extend(dish.strip() for dish in dishes if dish.strip())
+
+    st.write(f"조회된 날짜 수 {len(by_date)}일 · {count_label} {total}건")
+    if not by_date:
+        st.info("이 기간에 등록된 중식이 없어요.")
+        return
+
+    table = [
+        {"날짜": day.isoformat(), "메뉴": " · ".join(by_date[day])}
+        for day in sorted(by_date)
+    ]
+    st.dataframe(table, hide_index=True, use_container_width=True)
+
+
+st.title("두근두근 급식실")
+if st.button("급식실 열기"):
+    st.session_state["lunch_open"] = True
+
+if not st.session_state.get("lunch_open"):
+    st.stop()
+
+st.write("우리 학교 급식실에 오신 걸 환영합니다!")
+api_key = read_api_key()
+if not api_key:
+    st.info("키 없이 최대 5건만 보입니다")
+
+source = st.radio("자료 선택", ["나이스에서 조회", "선생님 준비 자료 불러오기"])
+
+if source == "선생님 준비 자료 불러오기":
+    st.subheader("당곡고등학교 · 2026년 9월 · 선생님 준비 자료")
+    try:
+        lunches = load_teacher_lunch()
+        show_menu(lunches, "준비 자료 중식 행 수", len(lunches))
+    except (requests.RequestException, csv.Error, ValueError, KeyError, TypeError, AttributeError):
+        st.error("선생님 준비 자료를 불러오거나 읽을 수 없어요.")
+    st.stop()
+
+query = st.text_input("학교 이름", value="당곡고등학교").strip()
+if not query:
+    st.info("검색할 학교 이름을 입력해 주세요.")
+    st.stop()
+
+try:
+    schools, school_total = fetch_neis("schoolInfo", {"SCHUL_NM": query}, api_key)
+    if not schools:
+        st.info("이 이름으로 찾은 학교가 없어요. 학교 이름의 일부만 입력해 보세요.")
+        st.stop()
+    if len(schools) &lt; school_total:
+        st.caption(f"검색된 학교 {school_total}곳 중 {len(schools)}곳을 표시해요. "
+                   "찾는 학교가 없으면 이름을 더 자세히 입력해 보세요.")
+
+    school = st.selectbox(
+        "학교 선택",
+        schools,
+        format_func=lambda s: f"{s['SCHUL_NM']} · {s['LCTN_SC_NM']} ({s['SD_SCHUL_CODE']})",
+    )
+    start, end = last_month()
+    st.subheader(f"{school['SCHUL_NM']} · {start.year}년 {start.month}월 중식")
+    lunches, meal_total = fetch_neis(
+        "mealServiceDietInfo",
+        {
+            "ATPT_OFCDC_SC_CODE": school["ATPT_OFCDC_SC_CODE"],
+            "SD_SCHUL_CODE": school["SD_SCHUL_CODE"],
+            "MMEAL_SC_CODE": "2",
+            "MLSV_FROM_YMD": start.strftime("%Y%m%d"),
+            "MLSV_TO_YMD": end.strftime("%Y%m%d"),
+        },
+        api_key,
+    )
+    show_menu(lunches, "응답의 전체 건수", meal_total)
+except LookupErrorNEIS as error:
+    st.error(f"조회 오류가 발생했어요. {error}")
+except (KeyError, TypeError, ValueError, AttributeError):
+    st.error("조회 오류가 발생했어요. 학교 정보나 급식 행의 형식을 확인할 수 없어요.")
+</pre></div>
+        <div class="codewrap code"><span class="label"><button type="button" class="fname">requirements.txt</button></span><button type="button" class="copy-btn">복사</button><pre>streamlit
+requests</pre></div>
+      </details>
+    </li>
+  </ol>
+
+  <h2 id="secrets">3. 인증키를 Secrets에 넣으세요</h2>
+  <p>우리 학교의 지난달 중식 전체를 조회할 때는 인증키를 사용합니다. 키는 선생님이 안내한 방식으로 받으세요. 실제 키를 입력할 곳은 배포한 앱의 <b>Secrets</b> 설정입니다. 키를 코드, 공개 앱 화면, AI 채팅에 붙이지 마세요.</p>
+  <ol class="steps">
+    <li>
+      <span class="st">배포한 앱의 설정을 여세요</span>
+      <p>Streamlit Community Cloud에 로그인하고 내 앱 목록에서 지난 시간에 배포한 앱을 찾으세요. 해당 앱의 메뉴에서 <b>Settings</b>를 열고 <b>Secrets</b>를 선택하세요.</p>
+    </li>
+    <li>
+      <span class="st">Secrets 칸에 한 줄을 추가하세요</span>
+      <p>아래 한 줄을 Secrets 칸에 복사하세요. 곧은 큰따옴표 두 개는 남기고 그 사이의 <code>…</code>를 받은 키 전체로 바꾸세요. <b>Save changes</b> 또는 저장 버튼을 누르세요.</p>
+      <div class="codewrap code"><span class="label">앱 설정의 Secrets 칸</span><button type="button" class="copy-btn">복사</button><pre>NEIS_API_KEY = "…"</pre></div>
+    </li>
+    <li>
+      <span class="st">같은 학교, 같은 달로 다시 조회하세요</span>
+      <p>앱을 다시 열고 <b>급식실 열기</b>를 누르세요. <b>나이스에서 조회</b>를 고르고 아까와 같은 학교와 지역을 선택하세요. ‘키 없이 최대 5건만 보입니다’ 안내가 사라졌는지, 식단 표가 나오는지 확인하세요. 조회 전후의 날짜 수와 전체 건수를 각각 비교하세요.</p>
+    </li>
+  </ol>
+  <p>키를 받지 못했거나 조회 오류가 계속되면 <b>선생님 준비 자료 불러오기</b>를 선택하세요. 이때도 표를 읽고 다음 실습을 할 수 있습니다. 기록에는 화면에 표시된 학교, 월, 자료 출처를 그대로 쓰세요.</p>
+
+  <h2 id="count">4. 몇 건을 받았는지 판단하세요</h2>
+  <div class="quote">
+    <div class="q">“표가 다섯 줄이면 지난달에 점심을 제공한 날도 5일입니까?”</div>
+    <span class="who"><img src="assets/img/dugeun.png" alt="" width="48" height="48" loading="lazy"><span><b>두근의 질문</b> 다섯 줄은 화면에서 셀 수 있습니다. 지난달 중식을 모두 받았다고 말하려면 어느 수를 더 확인해야 합니까?</span></span>
+  </div>
+
+  <p><b>조회된 날짜 수</b>는 받은 목록에 서로 다른 급식일이 며칠 있는지 나타냅니다. <b>받은 행 수</b>는 날짜별로 묶기 전 식단 목록의 길이입니다. <b>응답의 전체 건수</b>는 선택한 학교와 조회 기간, 중식이라는 조건에 맞는 행이 나이스에 모두 몇 건 있는지 나타냅니다. 한 달치를 모두 받았는지 판단할 때는 받은 행 수와 전체 건수를 비교하세요.</p>
+
+  <table class="daymap">
+    <thead><tr><th scope="col">화면에서 확인한 내용</th><th scope="col">기록할 판단</th></tr></thead>
+    <tbody>
+      <tr><td>나이스에서 키 없이 조회했습니다. 예를 들어 서로 다른 날짜가 5일이고 응답의 전체 건수가 18건입니다.</td><td>키 없이 최대 5행을 받을 수 있고 날짜가 5개이므로 받은 행은 5건입니다. ‘전체 18건 중 5건을 받았습니다’라고 기록합니다.</td></tr>
+      <tr><td>나이스에서 키로 조회했습니다. 예를 들어 서로 다른 날짜가 18일이고 응답의 전체 건수도 18건입니다.</td><td>서로 다른 18일이 모두 표에 있으므로 전체 18건을 확인했습니다. ‘전체 18건 중 18건을 받았습니다’라고 기록합니다.</td></tr>
+      <tr><td>준비 자료를 골랐습니다. 조회된 날짜 수는 20일이고 준비 자료 중식 행 수는 20건입니다.</td><td>‘당곡고등학교 · 2026년 9월 · 선생님 준비 자료, 파일의 전체 20건 중 20건을 받았습니다’라고 기록합니다.</td></tr>
+    </tbody>
+  </table>
+
+  <p>기준 코드는 같은 날짜의 식단을 한 행에 모아서 보여 줍니다. 같은 날짜에 원래 자료가 두 행 있었다면 표에는 한 줄로 보입니다. 나이스 조회에서 날짜 수와 전체 건수가 다르고 받은 행 수를 판단하기 어렵다면, 같은 AI 대화에 아래 요청을 보내세요. 수정한 앱을 열어 같은 조건으로 조회한 뒤 두 건수를 읽으세요.</p>
+  <div class="codewrap prompt"><span class="label">받은 행 수를 따로 확인할 때</span><button type="button" class="copy-btn">복사</button><pre>나이스에서 실제로 받은 식단이 날짜별로 묶기 전에 몇 행인지 세어서 ‘받은 행 수’로 보여 줘. 조회된 날짜 수, 받은 행 수, 응답의 전체 건수를 표 위에서 함께 읽을 수 있게 해 줘.</pre></div>
+
+  <h3>내가 조회한 결과를 기록하세요</h3>
+  <p>표 위의 제목을 먼저 읽고 아래 빈칸을 수업 기록에 채우세요. 위 표의 18건은 설명을 위한 예입니다. 내 기록에는 실제로 확인한 수를 쓰세요. 인증이나 통신 오류로 표를 받지 못했다면 건수는 비워 두고 오류 문구를 적으세요.</p>
+  <div class="codewrap"><span class="label">조회 기록</span><button type="button" class="copy-btn">복사</button><pre>학교와 지역 □ · 조회한 연도와 월 □ · 자료 출처 □
+조회된 급식일은 □일입니다. 전체 □건 중 □건을 받았습니다.
+이 자료로 확인할 수 있는 기간은 □입니다.</pre></div>
+
+  <h2>막힐 때 펼쳐 보세요</h2>
+  <details class="sample">
+    <summary>‘이 기간에 등록된 중식이 없어요’ 또는 INFO-200이 나옵니다</summary>
+    <p>급식 조회에서 <code>INFO-200</code>은 보낸 조건에 맞는 식단이 없다는 뜻입니다. 선택한 학교의 이름과 지역, 표 위의 연도와 월이 맞는지 확인하세요. 조건이 맞으면 ‘해당 기간에 등록된 중식 없음’으로 기록하세요. 인증 오류나 서버에 연결할 수 없다는 안내가 나온 경우에는 급식 건수를 알 수 없습니다. 선생님 준비 자료를 선택해 실습을 이어 가세요.</p>
+  </details>
+  <details class="sample">
+    <summary>지난달을 조회했는데 5건만 보입니다</summary>
+    <p>표 위에서 키 없이 조회했다는 안내와 응답의 전체 건수를 찾으세요. 키 없이 받을 수 있는 자료는 처음 5건까지입니다. 전체가 5건보다 많아도 다음 쪽을 요청하면 같은 자료를 받습니다. <a href="#secrets">3절의 Secrets 설정</a>을 마치고 다시 조회하거나 선생님 준비 자료를 고르세요.</p>
+  </details>
+  <details class="sample">
+    <summary>목록에서 우리 학교를 찾을 수 없습니다</summary>
+    <p>‘이 이름으로 찾은 학교가 없어요’가 나오면 띄어쓰기와 학교 이름을 확인한 뒤, 학교 이름의 일부로 다시 검색하세요. 반대로 여러 학교가 검색되고 일부만 표시된다는 안내가 나오면 ‘당곡’ 대신 ‘당곡고등학교’처럼 더 자세히 입력하세요. 목록에서 학교명과 지역을 함께 확인하세요.</p>
+  </details>
+  <details class="sample">
+    <summary>Secrets에 저장한 뒤에도 키가 없다는 안내가 나옵니다</summary>
+    <p>지금 열어 둔 앱과 Secrets를 저장한 앱이 같은지 확인하세요. 설정에서 <code>NEIS_API_KEY</code>의 대문자와 밑줄, 큰따옴표 안에 입력한 값을 직접 확인하고 다시 저장하세요. 변경이 반영된 뒤 앱을 다시 여세요. 계속 이전 화면이 보이면 Community Cloud의 해당 앱 메뉴에서 <b>Reboot app</b>을 선택한 뒤 다시 조회하세요.</p>
+    <p>키가 없다는 안내는 사라지고 인증 오류가 나오면 앱이 키를 읽었더라도 나이스가 그 키를 받아들이지 않은 경우입니다. 선생님께는 오류 코드만 알려 주세요. 키를 확인하는 동안에는 선생님 준비 자료를 사용하세요.</p>
+  </details>
+
+  <div class="callout warn">
+    <div class="h">AI 딴소리 멈추기 한 줄</div>
+    <p>AI가 반찬 순위나 평가 버튼까지 추가했다면 같은 대화에 다음 한 줄을 보내세요.</p>
+    <div class="codewrap prompt"><span class="label">이번 시간에 확인할 기능</span><button type="button" class="copy-btn">복사</button><pre>첫 화면을 유지하고 학교 검색, 지난달 중식 조회, 선생님 준비 자료 선택, 날짜별 표와 건수 확인까지만 할 수 있게 main.py와 requirements.txt를 다시 보여 줘.</pre></div>
+  </div>
+
+  <h2>오늘 정리</h2>
+  <p>나이스에서 학교를 찾을 때에는 학교명과 지역을 확인했습니다. 그 학교의 중식을 조회할 때에는 교육청 코드, 학교 코드, 식사 종류, 기간을 사용했습니다. 인증키는 배포한 앱의 Secrets에 저장하고, 조회 결과는 공개 화면에서 확인했습니다.</p>
+  <p>짝에게 어느 학교의 어느 달 자료를 몇 건 받았는지 말해 보세요. 자료 일부를 받았다면 확인한 날짜가 며칠인지 덧붙이세요. 준비 자료를 사용했다면 ‘당곡고등학교 2026년 9월 중식 20일’이라고 범위를 밝혀 주세요.</p>
+
+  <h2>확인 문제</h2>
+  <div class="quiz">
+    <div class="qq"><span class="qn">문제 1</span> 키 없이 조회한 화면에 ‘조회된 날짜 수 5일 · 응답의 전체 건수 19건’이라고 표시됩니다. 기록으로 알맞은 것을 고르세요.</div>
+    <div class="qitem">
+      <div class="qopts qopts-col">
+        <button type="button" class="opt">지난달에 이 학교가 중식을 제공한 날은 모두 5일입니다.</button>
+        <button type="button" class="opt" data-ok="1">조건에 맞는 전체 19건 중 5건을 받았습니다. 나머지 날짜의 메뉴는 이 표에서 확인할 수 없습니다.</button>
+        <button type="button" class="opt">19건을 모두 받았고, 그중 메뉴가 있는 날만 5일입니다.</button>
+      </div>
+      <div class="fb">키 없이 받을 수 있는 식단은 최대 5건입니다. 표에 서로 다른 5일이 있으므로 5건을 받았습니다. 나이스가 알려 준 전체 19건까지 확인하려면 인증키로 다시 조회해야 합니다.</div>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <div class="qq"><span class="qn">문제 2</span> 선생님이 안내한 방식으로 실제 인증키를 받았습니다. 어디에 입력해야 합니까?</div>
+    <div class="qitem">
+      <div class="qopts qopts-col">
+        <button type="button" class="opt">AI가 조회를 시험할 수 있도록 ① 프롬프트 끝에 붙입니다.</button>
+        <button type="button" class="opt">배포할 때 읽을 수 있도록 공개 저장소의 main.py에 적습니다.</button>
+        <button type="button" class="opt" data-ok="1">배포한 앱의 Settings에서 Secrets를 열고 NEIS_API_KEY 값으로 저장합니다.</button>
+      </div>
+      <div class="fb">앱은 Secrets에 저장한 값을 읽어 나이스에 요청할 때 사용합니다. 공개할 코드와 AI 요청에는 설정 이름인 NEIS_API_KEY만 써도 됩니다.</div>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <div class="qq"><span class="qn">문제 3</span> 다른 지역의 학교를 검색한 뒤 ‘선생님 준비 자료 불러오기’를 선택했습니다. 지금 보이는 표를 어떻게 소개하겠습니까?</div>
+    <div class="qitem">
+      <div class="qopts qopts-col">
+        <button type="button" class="opt" data-ok="1">선생님이 준비한 당곡고등학교의 2026년 9월 중식 20일 자료입니다.</button>
+        <button type="button" class="opt">방금 검색한 학교의 지난달 중식 20일 자료입니다.</button>
+        <button type="button" class="opt">나이스가 방금 검색한 학교의 누락된 날짜를 채워 준 자료입니다.</button>
+      </div>
+      <div class="fb">준비 자료를 고르면 앱이 정해진 파일을 읽습니다. 표 위의 ‘당곡고등학교 · 2026년 9월 · 선생님 준비 자료’에서 학교와 기간, 출처를 확인할 수 있습니다.</div>
+    </div>
+  </div>
+
+  <h2>다음 시간 예고</h2>
+  <p>다음 시간에는 오늘 만든 앱의 날짜별 표에서 반찬마다 제공한 날을 셉니다. 같은 날짜에 같은 반찬이 두 번 적혀 있으면 하루로 셉니다. 가장 자주 나온 반찬을 찾은 뒤, 원래 식단 표에서 그 반찬이 나온 날짜를 직접 확인합니다. 한 달 중 일부만 받았다면 그래프에도 ‘조회된 급식일의 반찬 순위’라고 표시합니다.</p>
+
+  <div class="pager">
+    <a class="prev" href="lesson01.html"><div class="dir">← 이전 · 1차시</div><div class="tt">우리 학교 급식으로 어떤 앱을 만들 수 있을까?</div></a>
+    <a class="next" href="lesson03.html"><div class="dir">3차시 · 다음 →</div><div class="tt">지난달 우리 학교 급식에 가장 자주 나온 반찬은 무엇일까?</div></a>
+  </div>
+</main>
+</div>
+
+<footer class="foot">두근두근 급식실 · 학생용 교재 · 2차시</footer>
+<script src="assets/copy.js"></script>
+<script src="assets/check.js"></script>
+<script src="assets/quiz.js"></script>
+<script src="assets/answer.js"></script>
+</body>
+</html>

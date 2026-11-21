@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>8차시 · 우리가 완성한 앱으로 누가 무엇을 할 수 있을까? · 두근두근 급식실</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/theme.css">
+  <style>
+    #submission-card th {
+      width: 34%;
+      text-align: left;
+    }
+    #submission-card td {
+      height: 4.5em;
+    }
+    @media print {
+      body > :not(.wrap),
+      main > :not(#submission-card),
+      #submission-card > p {
+        display: none !important;
+      }
+      .wrap, main {
+        display: block;
+        width: auto;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+      }
+      #submission-card table {
+        display: table;
+        width: 100%;
+        border-collapse: collapse;
+        break-inside: avoid;
+      }
+      #submission-card th, #submission-card td {
+        padding: 0.4cm;
+        border: 1px solid #444;
+        color: #111;
+        background: white;
+      }
+      #submission-card td {
+        height: 2.6cm;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <a class="brand" href="index.html"><span class="chick">🍱</span> 두근두근 <span class="a">급식실</span></a>
+  <span class="spacer"></span>
+  <a class="home" href="index.html">← 목차</a>
+  <span class="badge">학생용</span>
+</div></div>
+
+<div class="wrap">
+<main>
+  <span class="eyebrow">팀 프로젝트 · 8차시</span>
+  <h1>우리가 완성한 앱으로 <span class="a">누가 무엇을 할 수 있을까?</span></h1>
+  <div class="under"></div>
+
+  <p class="lead">첫 시간에는 짝이 휴대폰에서 ‘급식실 열기’를 누르고 우리 반 인사말을 읽었습니다. 오늘은 다른 팀 친구가 우리 팀의 앱을 엽니다. 그 친구에게 “식판을 반납할 때 무엇부터 해야 하는지 찾아 주세요”처럼 앱으로 할 일을 하나 부탁하세요. 친구가 어디를 눌렀고 화면에서 무엇을 알아냈는지가 마지막 제출 카드에 들어갑니다.</p>
+
+  <div class="make-banner">
+    <div class="t">🎯 오늘 하는 것</div>
+    <ul>
+      <li>공개 전 세 항목을 점검하고, 다른 기기에서 최종 앱 주소를 엽니다.</li>
+      <li>두 팀이 역할을 바꿔 서로의 앱을 사용하고, 상대가 한 동작과 화면에 나온 결과를 기록합니다.</li>
+      <li>네 칸짜리 제출 카드를 완성하고, 급식실에서 발견한 문제를 어떻게 해결하려 했는지 돌아봅니다.</li>
+    </ul>
+  </div>
+
+  <h2>0. 오늘의 목표</h2>
+  <ul>
+    <li>우리 앱이 누구를 위한 것인지 설명하고, 처음 쓰는 친구에게 맡길 과제를 말할 수 있습니다.</li>
+    <li>친구가 혼자 한 일과 도움을 받아 한 일을 구분해 ‘쓸 수 있는가’의 확인 결과를 쓸 수 있습니다.</li>
+    <li>우리 앱이 실제 급식실에서도 도움이 되는지 알아보려면 어떤 행동을 관찰해야 하는지 말할 수 있습니다.</li>
+  </ul>
+
+  <h2>1. 시연 전 최종 점검</h2>
+  <p>6차시 이후에 고친 파일과 화면을 다시 살펴보세요. 한 사람은 GitHub에서 배포에 사용한 파일을 열고, 한 사람은 앱에서 오늘 시연할 과제를 끝까지 해 보세요.</p>
+  <ul class="checklist">
+    <li><b>개인정보 입력란</b> 첫 화면부터 결과 화면까지 이름, 학번, 연락처를 받는 입력란이 있는지 확인하세요. 있으면 입력란을 삭제하고 수정한 앱을 다시 배포하세요.</li>
+    <li><b>얼굴 사진</b> 저장소의 사진과 앱에 표시되는 안내 그림을 확인하세요. 사람 얼굴이 나온 사진은 빼세요. 장소를 알려 줄 때는 ‘식판 수레’처럼 그곳에서 찾을 물건의 이름을 쓸 수 있습니다.</li>
+    <li><b>인증키</b> 최종 코드와 공개 파일에 실제 인증키가 들어 있는지 확인하세요. 급식 조회에 키를 쓰는 팀은 <code>NEIS_API_KEY</code>의 값을 배포 설정의 Secrets에만 보관하세요. 실제 키를 공개 저장소에 올렸다면 선생님께 알리고 그 키를 폐기한 뒤 새 키를 사용하세요. 반납 절차처럼 학교에서 확인한 내용만 안내하는 앱은 키 없이 시연할 수 있습니다.</li>
+  </ul>
+
+  <h3>다른 기기에서 제출할 주소를 여세요</h3>
+  <p>실행 중인 앱의 <code>.streamlit.app</code> 주소를 복사해 팀원의 휴대폰이나 다른 컴퓨터에서 여세요. 7차시에 고친 문구나 화면이 보이는지 살펴보고, 과제를 한 번 수행해 결과를 확인하세요. 제출 카드에는 이때 연 주소를 적습니다. 짝 시연을 시작할 때는 상대가 첫 화면부터 볼 수 있게 하세요.</p>
+
+  <details class="sample">
+    <summary>앱 링크를 열었는데 파일 목록이나 예전 화면이 보입니다</summary>
+    <p><code>main.py</code>와 <code>requirements.txt</code>가 나열되어 있다면 GitHub 저장소를 연 것입니다. 앱을 실행한 탭에서 주소를 다시 복사하세요. 앱은 열리는데 예전 문구가 보인다면 배포에 연결한 브랜치에서 마지막으로 고친 파일을 확인하세요. 수정 내용이 반영된 뒤 다른 기기에서 같은 주소를 다시 여세요.</p>
+  </details>
+
+  <h2>2. 두 팀씩 짝 시연</h2>
+  <p>두 팀이 한 짝을 이루고 A팀과 B팀을 정하세요. 각 팀은 <b>앱 링크, 7차시에 사용한 과제 문장, 5차시에 정한 ‘쓸 수 있는가’ 기준</b>을 준비하세요. 시연과 질의에 쓰는 시간은 모두 20분입니다. 한 팀에 10분씩 쓰고 역할을 바꿉니다.</p>
+
+  <table class="timetable">
+    <thead>
+      <tr><th scope="col">시간</th><th scope="col">과제를 주는 팀</th><th scope="col">앱을 사용하는 팀</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>앞 10분</td>
+        <td><b>A팀</b>이 도울 사람과 과제를 말하고 링크를 건넵니다. B팀이 누른 곳과 화면 결과를 적고, 사용이 끝나면 궁금한 점을 묻습니다.</td>
+        <td><b>B팀</b>이 자기 기기에서 A팀 앱을 열고 과제를 수행합니다. 찾은 내용을 읽거나 어디까지 했는지 보여 줍니다.</td>
+      </tr>
+      <tr>
+        <td>뒤 10분</td>
+        <td><b>B팀</b>이 같은 순서로 도울 사람과 과제를 말합니다. A팀의 동작과 화면 결과를 적고 질문합니다.</td>
+        <td><b>A팀</b>이 B팀 앱을 열고 과제를 수행합니다. 마지막으로 본 화면을 보여 주고 질문에 답합니다.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>과제를 말한 뒤에는 상대가 먼저 누를 때까지 기다리세요</h3>
+  <p>반납 안내 앱이라면 “우리 앱은 반납대를 처음 이용하는 학생을 위한 앱입니다. 식판을 반납할 때 가장 먼저 할 일을 찾아 주세요”라고 부탁할 수 있습니다. 이때 ‘반납 순서 보기’라는 버튼 이름까지 알려 주면 친구가 혼자 그 버튼을 찾을 수 있었는지 판단하기 어렵습니다.</p>
+  <p>친구가 멈추면 마지막으로 보고 있던 곳을 기록하세요. 친구가 도움을 요청하면 어떤 안내를 했고 그 뒤 무엇을 했는지도 적으세요. 과제가 끝난 뒤에 “처음에는 어느 버튼을 누르려고 했나요?”처럼 방금 본 행동에 관해 물으세요.</p>
+
+  <div class="quote">
+    <div class="q">“상대 팀 친구가 누른 곳은 어디이고, 그 뒤에 어떤 문장이 보였습니까?”</div>
+    <span class="who"><img src="assets/img/arong.png" alt="" width="48" height="48" loading="lazy"><span><b>아롱의 기록</b> 예를 들어 “‘반납 순서 보기’를 누르자 ‘1/4단계 · 남은 음식을 잔반통에 비워요.’가 나왔습니다”라고 적을 수 있습니다. 우리 팀 카드에는 오늘 직접 본 버튼 이름과 화면 문구를 쓰세요.</span></span>
+  </div>
+
+  <section id="submission-card" aria-labelledby="card-title">
+    <h2 id="card-title">3. 제출 카드</h2>
+    <p>브라우저에서 인쇄를 선택하면 아래 카드 한 장을 뽑을 수 있습니다. 팀마다 한 장씩 작성하세요. 시연을 마치면 상대 팀과 둘째 칸을 함께 읽고, 실제로 누른 곳과 화면 결과가 맞는지 확인한 뒤 선생님께 제출하세요.</p>
+    <table class="daymap">
+      <caption>두근두근 급식실 · 8차시 팀 앱 제출 카드</caption>
+      <tbody>
+        <tr>
+          <th scope="row">앱 링크<br><small>짝 팀이 열어 본 최종 앱 주소</small></th>
+          <td></td>
+        </tr>
+        <tr>
+          <th scope="row">시연한 동작과 화면 결과<br><small>상대가 누른 곳과 그 뒤에 표시된 내용</small></th>
+          <td></td>
+        </tr>
+        <tr>
+          <th scope="row">‘쓸 수 있는가’ 기준과 확인 결과<br><small>혼자 할 일과 실제로 해낸 일, 도움을 준 경우 그 내용</small></th>
+          <td></td>
+        </tr>
+        <tr>
+          <th scope="row">‘도움이 되는가’ 기준<br><small>급식실에서 어떤 행동이 어떻게 달라져야 하는지</small></th>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>셋째 칸의 기준이 ‘설명 없이 반납의 첫 단계를 찾아 말한다’이고 친구가 버튼 위치를 물었다면, 어떤 도움을 받아 첫 단계를 찾았는지 쓰세요. 넷째 칸에는 ‘같은 길이의 점심시간 동안 반납 순서를 묻는 횟수가 줄어든다’처럼 팀이 정한 기준을 적으세요. 실제 급식실에서 아직 확인하지 않았다면 그 옆에 <b>‘수업 뒤 확인’</b>이라고 쓰세요.</p>
+  </section>
+
+  <h2>4. 8차시를 돌아보며</h2>
+  <h3>1~4차시 · 공통 대시보드에서 답을 찾았습니다</h3>
+  <p>1차시에 배포한 첫 화면에 2차시에는 학교 검색과 한 달치 중식 표를 추가했습니다. 3차시에는 같은 날 같은 반찬을 한 번만 세어 제공 일수를 그래프로 나타내고, 그 반찬이 나온 날짜를 식단 표에서 확인했습니다. 4차시에는 친구에게 1위 반찬을 찾아 달라고 부탁하고, 친구가 멈춘 곳을 보고 화면 한 곳을 고쳤습니다. 그때 친구가 물어본 말과 우리가 바꾼 부분을 하나씩 떠올려 보세요.</p>
+
+  <h3>5~8차시 · 우리 팀이 도울 사람과 과제를 정했습니다</h3>
+  <p>5차시에는 급식실에서 누가 어떤 일을 어려워하는지 살펴보고, 6차시에는 그 일에 필요한 기능 하나를 만들었습니다. 7차시에는 친구가 사용하는 모습을 보고 화면을 고친 뒤 새 친구에게 같은 과제를 부탁했습니다. 오늘은 다른 팀이 그 과제를 어디까지 해냈는지 확인했습니다.</p>
+  <p>5차시의 기록과 오늘 제출 카드를 나란히 놓으세요. <b>문제 발견 → 문제 정의 → 해결</b>의 순서로 우리 팀이 한 일을 짝에게 설명하세요. 아래 질문에 팀에서 평소 쓰는 말로 답하면 됩니다.</p>
+  <ol class="steps">
+    <li><span class="st">문제 발견 · 무엇을 보거나 들었습니까?</span><p>현장 카드나 인터뷰에서 기억나는 행동 하나를 말하세요. 예를 들어 “반납대에 처음 간 친구가 식판을 든 채 무엇부터 해야 하는지 물었습니다”라고 설명할 수 있습니다.</p></li>
+    <li><span class="st">문제 정의 · 누구의 어떤 어려움을 골랐습니까?</span><p>앞에서 말한 장면을 떠올리고 “처음 반납하는 학생은 반납대 앞에서 첫 순서를 확인할 방법이 필요합니다”처럼 도울 사람과 그 사람이 할 일을 말하세요.</p></li>
+    <li><span class="st">해결 · 무엇을 만들었고 어디까지 확인했습니까?</span><p>그 일을 돕기 위해 만든 기능 하나를 말하세요. 이어서 제출 카드의 셋째 칸을 보고 친구가 혼자 해낸 일이나 도움이 필요했던 곳을 설명하세요.</p></li>
+  </ol>
+
+  <h2>5. 수업이 끝난 뒤 해 볼 수 있는 일</h2>
+  <p>제출 카드를 내면 8차시 활동을 마칩니다. 실제 급식실에서도 도움이 되는지 알아보고 싶은 팀은 다음 활동을 선택하세요. 반납 안내 앱을 예로 들면, 교실에서는 친구가 첫 단계를 찾는 모습을 보았고 급식실에서는 반납 순서를 묻는 횟수를 관찰할 수 있습니다.</p>
+  <ol class="steps">
+    <li><span class="st">앱을 사용하기 전의 행동을 기록하세요</span><p>선생님과 관찰할 장소, 시간대, 시간 길이를 정하세요. 예를 들어 점심 배식 시작 20분 뒤부터 10분 동안 같은 반납대에서 ‘반납 순서를 묻는 질문 한 번’을 한 건으로 세세요.</p></li>
+    <li><span class="st">급식실에 앱을 적용하고 같은 조건에서 다시 관찰하세요</span><p>반납대를 이용하는 학생이 앱에서 순서를 확인할 수 있게 하세요. 적용 전과 같은 반납대에서 같은 시간대에 같은 길이로 관찰하고, 같은 기준으로 질문 횟수를 세세요. 이름과 학번은 적지 말고 관찰한 행동과 숫자만 기록하세요.</p></li>
+    <li><span class="st">전후 기록을 선생님께 보고하세요</span><p>“반납 순서를 묻는 질문이 적용 전 10분 동안에는 ___건, 적용 후 10분 동안에는 ___건이었습니다”처럼 실제로 센 값을 말하세요. 두 값이 같거나 질문이 늘었을 때도 관찰한 값 그대로 보고하세요.</p></li>
+  </ol>
+
+  <h2>확인 문제</h2>
+  <div class="quiz">
+    <div class="qq"><span class="qn">문제 1</span> 처음 쓰는 친구가 혼자 반납 순서를 찾을 수 있는지 확인하려고 합니다. 시연을 어떻게 시작하면 좋습니까?</div>
+    <div class="qitem">
+      <div class="qopts qopts-col">
+        <button type="button" class="opt">먼저 우리 팀이 모든 버튼을 한 번씩 누른 뒤 같은 순서로 따라 하도록 합니다.</button>
+        <button type="button" class="opt" data-ok="1">누구를 위한 앱인지 말하고 첫 단계를 찾아 달라고 부탁한 뒤 친구가 누르는 곳을 봅니다.</button>
+        <button type="button" class="opt">반납 순서가 보이는 화면을 미리 열어 놓고 첫 단계의 문장을 읽어 달라고 합니다.</button>
+      </div>
+      <div class="fb">친구가 첫 화면에서 시작해야 안내를 스스로 찾는 과정을 볼 수 있습니다. 과제를 먼저 말하고, 버튼에 관한 질문은 친구가 사용한 뒤에 하세요.</div>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <div class="qq"><span class="qn">문제 2</span> 기준은 ‘설명 없이 반납의 첫 단계를 찾아 말한다’입니다. 친구는 버튼 위치를 물었고, 팀원이 가리켜 준 뒤 첫 단계를 찾아 읽었습니다. 셋째 칸에 쓸 기록을 고르세요.</div>
+    <div class="qitem">
+      <div class="qopts qopts-col">
+        <button type="button" class="opt" data-ok="1">기준은 혼자 첫 단계를 찾아 말하는 것입니다. 친구는 위치를 안내받은 뒤 버튼을 눌러 첫 단계를 읽었습니다.</button>
+        <button type="button" class="opt">친구가 첫 단계를 정확하게 읽었으므로 설명 없이 과제를 마쳤습니다.</button>
+        <button type="button" class="opt">친구가 버튼 위치를 물었으므로 첫 단계가 화면에 표시되지 않았습니다.</button>
+      </div>
+      <div class="fb">친구가 첫 단계를 읽은 것과 그 전에 버튼 위치를 안내받은 것 모두 관찰한 사실입니다. 두 사실을 함께 적으면 어느 동작에서 도움이 필요했는지 알 수 있습니다.</div>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <div class="qq"><span class="qn">문제 3</span> 짝 팀은 교실에서 반납 순서를 혼자 찾았습니다. 실제 급식실에는 아직 앱을 적용하지 않았습니다. 넷째 칸에 쓸 내용으로 알맞은 것을 고르세요.</div>
+    <div class="qitem">
+      <div class="qopts qopts-col">
+        <button type="button" class="opt">교실에서 순서를 찾았으므로 급식실에서도 순서를 묻는 질문이 줄었습니다.</button>
+        <button type="button" class="opt">짝 팀이 버튼을 누른 횟수를 급식실에서 순서를 묻는 횟수로 기록합니다.</button>
+        <button type="button" class="opt" data-ok="1">같은 반납대에서 같은 시간 동안 순서를 묻는 횟수가 줄어드는지 봅니다. 수업 뒤 확인.</button>
+      </div>
+      <div class="fb">교실에서 확인한 결과는 셋째 칸에 적습니다. 넷째 칸에는 현장에서 살펴볼 행동과 변화의 기준을 적고, 실제 관찰 전에는 ‘수업 뒤 확인’이라고 표시합니다.</div>
+    </div>
+  </div>
+
+  <div class="pager">
+    <a class="prev" href="lesson07.html"><div class="dir">← 이전 · 7차시</div><div class="tt">고친 화면에서 새 친구는 혼자 해낼 수 있을까?</div></a>
+    <a class="next" href="index.html"><div class="dir">돌아가기 →</div><div class="tt">목차</div></a>
+  </div>
+</main>
+</div>
+
+<footer class="foot">두근두근 급식실 · 학생용 교재 · 8차시</footer>
+<script src="assets/copy.js"></script>
+<script src="assets/check.js"></script>
+<script src="assets/quiz.js"></script>
+<script src="assets/answer.js"></script>
+</body>
+</html>

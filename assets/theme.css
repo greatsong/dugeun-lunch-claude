@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Jua&display=swap");
 /* 두근두근 급식실 · DS 교재 스타일 위에 센터 초록 톤을 덮는다 (PPT 디자인과 같은 색·글꼴) */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 :root {
@@ -18,3 +19,6 @@
   --font: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 .topbar { background: rgba(251, 252, 247, 0.92); }
+
+/* 프롬프트 상자는 배민 주아체(Google Fonts의 Jua)로 — PPT 프롬프트 글꼴과 같게 (PD 결정 11-21) */
+.codewrap.prompt pre { font-family: "Jua", "BM JUA_OTF", "배달의민족 주아 OTF", var(--font); font-size: 1.04em; line-height: 1.75; letter-spacing: 0.01em; }

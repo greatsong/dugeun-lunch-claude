@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3차시 · 지난달 우리 학교 급식에 가장 자주 나온 반찬은 무엇일까? · 두근두근 급식실</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <a class="brand" href="index.html"><span class="chick">🍱</span> 두근두근 <span class="a">급식실</span></a>
+  <span class="spacer"></span>
+  <a class="home" href="index.html">← 목차</a>
+  <span class="badge">학생용</span>
+</div></div>
+
+<div class="wrap">
+<main>
+  <span class="eyebrow">공통 수업 · 3차시</span>
+  <h1>지난달 우리 학교 급식에 <span class="a">가장 자주 나온 반찬은 무엇일까?</span></h1>
+  <div class="under"></div>
+
+  <p class="lead">9월 1일 당곡고 점심에는 잔멸치볶음과 배추김치가 나왔습니다. 다음 날 식단을 보면 배추김치가 또 있습니다. 9월 중식 표에서 배추김치가 나온 날짜에 하나씩 표시하면 한 달 동안 며칠 나왔는지 알 수 있습니다. 오늘은 지난 시간에 만든 표 아래에 반찬 순위를 추가하고, 1위 막대에 적힌 일수가 맞는지 직접 확인합니다.</p>
+
+  <div class="make-banner">
+    <div class="t">🎯 오늘 하는 것</div>
+    <ul>
+      <li>다섯 날의 식단을 손으로 세며 반찬의 제공 일수를 구합니다.</li>
+      <li>지난 시간 앱에 반찬 순위 그래프와 반찬별 날짜 목록을 추가합니다.</li>
+      <li>1위 반찬이 나온 날짜를 원래 식단 표에서 찾고, 제외 항목을 바꾸면 순위가 어떻게 달라지는지 살펴봅니다.</li>
+    </ul>
+  </div>
+
+  <h2>0. 오늘의 목표</h2>
+  <ul>
+    <li>우리 반에서 집계할 메뉴를 정하고, 같은 반찬이 서로 다른 며칠에 나왔는지 셀 수 있습니다.</li>
+    <li>그래프의 1위를 원래 식단 표로 검산하고, 어느 학교의 어느 기간에 해당하는 결과인지 설명할 수 있습니다.</li>
+  </ul>
+
+  <details class="sample">
+    <summary>지난 시간 앱이 없어요</summary>
+    <p>지난 시간에 쓰던 대화와 앱이 있으면 그대로 이어서 사용하세요. 앱 파일이 없으면 아래 두 파일을 각각 복사해 <a href="lesson01.html#deploy">1차시에 배포한 저장소</a>에 같은 이름으로 저장하세요. 앱에서 <b>급식실 열기</b>를 누른 뒤 학교와 날짜별 중식 표를 확인하세요. 인증키가 없거나 조회가 막히면 <b>선생님 준비 자료 불러오기</b>를 선택하세요.</p>
+    <p>새 대화에서 시작할 때는 아래 첫 문장을 복사하세요. 대괄호를 지우고 그곳에 현재 <code>main.py</code>의 내용 전체를 넣으세요. 이어서 같은 메시지 맨 아래에 이 페이지의 <a href="#prompt">① 반찬 순위 프롬프트</a>를 붙여 보내세요.</p>
+    <div class="codewrap prompt"><span class="label">새 대화의 첫 문장</span><button type="button" class="copy-btn">복사</button><pre>내 현재 main.py는 아래와 같아. 이 파일을 바탕으로 맨 아래에 적은 내용만 고쳐 줘.
+[현재 main.py 전체]</pre></div>
+    <div class="codewrap code"><span class="label"><button type="button" class="fname">main.py</button> · 2차시</span><button type="button" class="copy-btn">복사</button><pre>import csv
+import re
+from collections import defaultdict
+from datetime import datetime, timedelta
+from io import StringIO
+from zoneinfo import ZoneInfo
+
+import requests
+import streamlit as st
+from streamlit.errors import StreamlitSecretNotFoundError
+
+
+NEIS_URL = "https://open.neis.go.kr/hub"
+TEACHER_CSV = (
+    "https://raw.githubusercontent.com/greatsong/dugeun-lunch-claude/"
+    "main/data/danggok_lunch_202609.csv"
+)
+
+
+class LookupErrorNEIS(Exception):
+    pass
+
+
+def read_api_key():
+    try:
+        return st.secrets.get("NEIS_API_KEY", "").strip()
+    except StreamlitSecretNotFoundError:
+        return ""
+
+
+def last_month():
+    first_of_this_month = datetime.now(ZoneInfo("Asia/Seoul")).date().replace(day=1)
+    end = first_of_this_month - timedelta(days=1)
+    return end.replace(day=1), end
+
+
+def check_result(result):
+    code = result.get("CODE", "")
+    if code == "INFO-200":
+        return False
+    if code != "INFO-000":
+        raise LookupErrorNEIS(f"나이스 응답 코드를 확인해 주세요 ({code or '코드 없음'}).")
+    return True
+
+
+@st.cache_data(ttl=600, show_spinner=False)
+def fetch_neis(service, filters, api_key):
+    page_size = 100 if api_key else 5
+    params = {"Type": "json", "pSize": page_size, "pIndex": 1, **filters}
+    if api_key:
+        params["KEY"] = api_key
+
+    rows = []
+    while True:
+        try:
+            response = requests.get(f"{NEIS_URL}/{service}", params=params, timeout=12)
+            response.raise_for_status()
+            data = response.json()
+        except (requests.RequestException, ValueError):
+            # 요청 주소에 KEY가 포함될 수 있어 예외 원문은 화면에 표시하지 않는다.
+            raise LookupErrorNEIS("나이스 서버에 연결하거나 응답을 읽는 데 실패했어요.") from None
+
+        try:
+            if "RESULT" in data:
+                if not check_result(data["RESULT"]) and not rows:
+                    return [], 0
+                raise LookupErrorNEIS("요청한 목록을 끝까지 받지 못했어요.")
+
+            head = data[service][0]["head"]
+            for item in head:
+                if "RESULT" in item and not check_result(item["RESULT"]):
+                    if not rows:
+                        return [], 0
+                    raise LookupErrorNEIS("요청한 목록을 끝까지 받지 못했어요.")
+
+            total = int(next(item["list_total_count"] for item in head if "list_total_count" in item))
+            page = data[service][1]["row"]
+            if not isinstance(page, list) or (not page and len(rows) &lt; total):
+                raise LookupErrorNEIS("나이스가 보낸 목록이 불완전해요.")
+        except (KeyError, IndexError, TypeError, ValueError, StopIteration):
+            raise LookupErrorNEIS("나이스 응답에서 목록이나 전체 건수를 읽을 수 없어요.") from None
+
+        rows.extend(page)
+        if not api_key or len(rows) &gt;= total:
+            return rows, total
+        params["pIndex"] += 1
+
+
+@st.cache_data(ttl=600, show_spinner=False)
+def load_teacher_lunch():
+    response = requests.get(TEACHER_CSV, timeout=12)
+    response.raise_for_status()
+    reader = csv.DictReader(StringIO(response.content.decode("utf-8-sig")))
+    required = {"MLSV_YMD", "MMEAL_SC_NM", "DDISH_NM"}
+    if not required.issubset(reader.fieldnames or []):
+        raise ValueError("필수 열 누락")
+    return [row for row in reader if row["MMEAL_SC_NM"].strip() == "중식"]
+
+
+def show_menu(rows, count_label, total):
+    by_date = defaultdict(list)
+    for row in rows:
+        day = datetime.strptime(row["MLSV_YMD"].strip(), "%Y%m%d").date()
+        dishes = re.split(r"&lt;br\s*/?\s*&gt;", row["DDISH_NM"], flags=re.IGNORECASE)
+        by_date[day].extend(dish.strip() for dish in dishes if dish.strip())
+
+    st.write(f"조회된 날짜 수 {len(by_date)}일 · {count_label} {total}건")
+    if not by_date:
+        st.info("이 기간에 등록된 중식이 없어요.")
+        return
+
+    table = [
+        {"날짜": day.isoformat(), "메뉴": " · ".join(by_date[day])}
+        for day in sorted(by_date)
+    ]
+    st.dataframe(table, hide_index=True, use_container_width=True)
+
+
+st.title("두근두근 급식실")
+if st.button("급식실 열기"):
+    st.session_state["lunch_open"] = True
+
+if not st.session_state.get("lunch_open"):
+    st.stop()
+
+st.write("우리 학교 급식실에 오신 걸 환영합니다!")
+api_key = read_api_key()
+if not api_key:
+    st.info("키 없이 최대 5건만 보입니다")
+
+source = st.radio("자료 선택", ["나이스에서 조회", "선생님 준비 자료 불러오기"])
+
+if source == "선생님 준비 자료 불러오기":
+    st.subheader("당곡고등학교 · 2026년 9월 · 선생님 준비 자료")
+    try:
+        lunches = load_teacher_lunch()
+        show_menu(lunches, "준비 자료 중식 행 수", len(lunches))
+    except (requests.RequestException, csv.Error, ValueError, KeyError, TypeError, AttributeError):
+        st.error("선생님 준비 자료를 불러오거나 읽을 수 없어요.")
+    st.stop()
+
+query = st.text_input("학교 이름", value="당곡고등학교").strip()
+if not query:
+    st.info("검색할 학교 이름을 입력해 주세요.")
+    st.stop()
+
+try:
+    schools, school_total = fetch_neis("schoolInfo", {"SCHUL_NM": query}, api_key)
+    if not schools:
+        st.info("이 이름으로 찾은 학교가 없어요. 학교 이름의 일부만 입력해 보세요.")
+        st.stop()
+    if len(schools) &lt; school_total:
+        st.caption(f"검색된 학교 {school_total}곳 중 {len(schools)}곳을 표시해요. "
+                   "찾는 학교가 없으면 이름을 더 자세히 입력해 보세요.")
+
+    school = st.selectbox(
+        "학교 선택",
+        schools,
+        format_func=lambda s: f"{s['SCHUL_NM']} · {s['LCTN_SC_NM']} ({s['SD_SCHUL_CODE']})",
+    )
+    start, end = last_month()
+    st.subheader(f"{school['SCHUL_NM']} · {start.year}년 {start.month}월 중식")
+    lunches, meal_total = fetch_neis(
+        "mealServiceDietInfo",
+        {
+            "ATPT_OFCDC_SC_CODE": school["ATPT_OFCDC_SC_CODE"],
+            "SD_SCHUL_CODE": school["SD_SCHUL_CODE"],
+            "MMEAL_SC_CODE": "2",
+            "MLSV_FROM_YMD": start.strftime("%Y%m%d"),
+            "MLSV_TO_YMD": end.strftime("%Y%m%d"),
+        },
+        api_key,
+    )
+    show_menu(lunches, "응답의 전체 건수", meal_total)
+except LookupErrorNEIS as error:
+    st.error(f"조회 오류가 발생했어요. {error}")
+except (KeyError, TypeError, ValueError, AttributeError):
+    st.error("조회 오류가 발생했어요. 학교 정보나 급식 행의 형식을 확인할 수 없어요.")
+</pre></div>
+    <div class="codewrap code"><span class="label"><button type="button" class="fname">requirements.txt</button> · 2차시</span><button type="button" class="copy-btn">복사</button><pre>streamlit
+requests</pre></div>
+  </details>
+
+  <h2>1. 반찬을 세는 기준</h2>
+  <p><b>제공 일수</b>는 그 메뉴가 나온 날짜의 수입니다. 월요일 식단에 두부조림이 두 번 적혀 있어도 월요일에 표시할 칸은 하나입니다. 수요일에도 두부조림이 나왔다면 수요일에 한 번 더 표시합니다.</p>
+  <p>원래 식단 표에는 메뉴 이름과 알레르기 번호를 보존합니다. 순위를 계산할 때만 <code>&lt;br/&gt;</code>에서 메뉴를 나누고, 각 이름 끝에 붙은 괄호 속 번호를 뗍니다. 그러면 ‘두부조림 (5.6)’과 ‘두부조림’을 같은 이름으로 셀 수 있습니다. ‘찜닭(당면)’의 ‘당면’처럼 음식을 설명하는 글자는 이름에 남깁니다.</p>
+
+  <h3>손으로 먼저 세어 보세요</h3>
+  <p>아래는 집계 연습용 식단입니다. 이번에는 흰밥과 미역국을 제외합니다. 종이에 두부조림과 배추김치를 적고, 각 반찬이 나온 요일을 이름 옆에 적으세요.</p>
+  <table class="daymap">
+    <thead><tr><th scope="col">급식일</th><th scope="col">연습용 중식 메뉴</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">월요일</th><td>흰밥 · 미역국 · 두부조림 (5.6) · 두부조림 · 배추김치 (9)</td></tr>
+      <tr><th scope="row">화요일</th><td>흰밥 · 미역국 · 깍두기</td></tr>
+      <tr><th scope="row">수요일</th><td>흰밥 · 미역국 · 두부조림 (5.6) · 오이무침</td></tr>
+      <tr><th scope="row">목요일</th><td>흰밥 · 미역국 · 배추김치</td></tr>
+      <tr><th scope="row">금요일</th><td>흰밥 · 미역국 · 잔멸치볶음</td></tr>
+    </tbody>
+  </table>
+  <div class="quiz">
+    <div class="qq"><span class="qn">손으로 먼저</span> 흰밥과 미역국을 제외하면 어느 반찬이 1위입니까?</div>
+    <div class="qitem">
+      <div class="qopts qopts-col">
+        <button type="button" class="opt">두부조림이 3일로 1위입니다.</button>
+        <button type="button" class="opt" data-ok="1">두부조림과 배추김치가 각각 2일로 공동 1위입니다.</button>
+        <button type="button" class="opt">배추김치가 2일로 단독 1위입니다.</button>
+      </div>
+      <div class="fb">두부조림은 월요일과 수요일, 배추김치는 월요일과 목요일에 나왔습니다. 월요일의 두부조림 두 항목은 같은 날짜에 해당하므로 두부조림의 제공 일수는 2일입니다.</div>
+    </div>
+  </div>
+
+  <h2 id="practice">2. 중식 표 아래에 반찬 순위 만들기</h2>
+  <ol class="steps">
+    <li id="prompt">
+      <span class="st">① 반찬 순위를 요청합니다</span>
+      <p>2차시 앱을 만든 AI 대화에 아래 요청을 보내세요. 지난 시간 이후에 직접 파일을 고쳤다면 현재 배포한 <code>main.py</code>도 함께 보내세요.</p>
+      <div class="codewrap prompt"><span class="label">① 반찬 순위 프롬프트</span><button type="button" class="copy-btn">복사</button><pre>지금 앱의 중식 표 아래에 반찬 순위를 추가해 줘. 원래 표는 그대로 두고, 셀 때만 메뉴를 &lt;br/&gt;로 나누고 끝에 붙은 괄호 속 알레르기 번호를 떼 줘.
+메뉴 목록에서 우리 반이 밥·국처럼 집계에서 뺄 항목을 직접 고르게 해 줘. 같은 날 같은 반찬은 한 번만 세고, 자주 나온 반찬 10개를 가로 막대그래프로 그려 줘. 막대 끝에 며칠인지 쓰고 공동 1위도 모두 표시해 줘.
+조회된 날짜 수가 전체 건수보다 적으면 그래프 제목을 '조회된 급식일의 반찬 순위'로, 모두 받았으면 'OOOO년 O월 반찬 순위'로 해 줘. 반찬을 고르면 그 반찬이 나온 날짜를 보여 줘.
+지금 있는 기능은 그대로 두고 고친 main.py 전체를 줘.</pre></div>
+      <p>기존 저장소의 <code>main.py</code>를 받은 내용으로 갱신하세요. 그래프에 쓴 도구가 설치 목록에 없으면 같은 대화에서 “지금 파일을 실행하는 데 필요한 requirements.txt 전체도 줘.”라고 요청하세요. 두 파일을 저장한 뒤 지난 시간에 배포한 앱 주소를 여세요.</p>
+    </li>
+    <li id="screen-check">
+      <span class="st">② 화면에서 확인할 것</span>
+      <p>학교 검색이 보이지 않으면 <b>급식실 열기</b>를 누르세요. 인증키가 있으면 <b>나이스에서 조회</b>를 선택해 학교 이름과 지역을 확인하세요. 키가 없거나 조회가 막히면 <b>선생님 준비 자료 불러오기</b>를 선택하세요. 이때 확인할 자료는 당곡고등학교의 2026년 9월 중식 20일분입니다.</p>
+      <ul class="checklist">
+        <li><b>원래 표와 제외 항목.</b> 표에서 밥이나 국의 실제 이름 하나를 찾아 제외 목록에서 고르세요. 그 메뉴가 순위에서 빠진 뒤에도 원래 표의 같은 날짜에 보입니까?</li>
+        <li><b>막대와 일수.</b> 제외하고 남은 메뉴가 10가지 이상이면 가로 막대가 10개입니까? 10가지보다 적으면 남은 가짓수만큼 보입니까? 가장 긴 막대 끝에서 ‘12일’처럼 숫자와 단위를 함께 읽을 수 있습니까?</li>
+        <li><b>공동 1위.</b> 가장 긴 막대와 일수가 같은 반찬이 여럿이면 ‘공동 1위’에 해당 이름이 모두 나옵니까? 공동 1위 명단에는 그래프의 10개 제한을 적용하지 않습니다.</li>
+        <li><b>날짜 목록.</b> 막대 하나를 정하고 ‘나온 날짜를 확인할 반찬’에서 같은 이름을 고르세요. 서로 다른 날짜가 막대 끝에 적힌 일수만큼 나옵니까?</li>
+        <li><b>그래프 제목.</b> 표 위의 조회된 날짜 수와 전체 건수를 읽으세요. 나이스에서 전체 20건 중 5일만 받았다면 제목은 ‘조회된 급식일의 반찬 순위’입니다. 준비 자료 20일을 모두 불러왔다면 제목은 ‘2026년 9월 반찬 순위’입니다. 지금 화면의 제목이 실제로 받은 자료의 범위와 맞습니까?</li>
+      </ul>
+      <details class="sample">
+        <summary>선생님이 실행해 확인한 3차시 기준 코드 펼치기 · main.py와 requirements.txt</summary>
+        <p class="mini">날짜 표는 나오는데 순위가 다를 때 비교할 코드입니다. 이 코드로 실행하려면 두 파일을 각각 복사하세요.</p>
+        <div class="codewrap code"><span class="label"><button type="button" class="fname">main.py</button></span><button type="button" class="copy-btn">복사</button><pre>import csv
+import re
+from collections import defaultdict
+from datetime import datetime, timedelta
+from io import StringIO
+from zoneinfo import ZoneInfo
+
+import altair as alt
+import requests
+import streamlit as st
+from streamlit.errors import StreamlitSecretNotFoundError
+
+
+NEIS_URL = "https://open.neis.go.kr/hub"
+TEACHER_CSV = (
+    "https://raw.githubusercontent.com/greatsong/dugeun-lunch-claude/"
+    "main/data/danggok_lunch_202609.csv"
+)
+
+MENU_BREAK = re.compile(r"&lt;br\s*/?\s*&gt;", re.IGNORECASE)
+# 메뉴 끝의 (5.6.13.), (1, 2) 같은 번호 묶음만 제거한다.
+ALLERGY_SUFFIX = re.compile(r"\s*\(\s*\d+(?:[\s.,·]+\d+)*[\s.,·]*\)\s*$")
+
+
+class LookupErrorNEIS(Exception):
+    pass
+
+
+def read_api_key():
+    try:
+        return st.secrets.get("NEIS_API_KEY", "").strip()
+    except StreamlitSecretNotFoundError:
+        return ""
+
+
+def last_month():
+    first_of_this_month = datetime.now(ZoneInfo("Asia/Seoul")).date().replace(day=1)
+    end = first_of_this_month - timedelta(days=1)
+    return end.replace(day=1), end
+
+
+def check_result(result):
+    code = result.get("CODE", "")
+    if code == "INFO-200":
+        return False
+    if code != "INFO-000":
+        raise LookupErrorNEIS(f"나이스 응답 코드를 확인해 주세요 ({code or '코드 없음'}).")
+    return True
+
+
+@st.cache_data(ttl=600, show_spinner=False)
+def fetch_neis(service, filters, api_key):
+    page_size = 100 if api_key else 5
+    params = {"Type": "json", "pSize": page_size, "pIndex": 1, **filters}
+    if api_key:
+        params["KEY"] = api_key
+
+    rows = []
+    while True:
+        try:
+            response = requests.get(f"{NEIS_URL}/{service}", params=params, timeout=12)
+            response.raise_for_status()
+            data = response.json()
+        except (requests.RequestException, ValueError):
+            # 요청 주소에 KEY가 포함될 수 있어 예외 원문은 화면에 표시하지 않는다.
+            raise LookupErrorNEIS("나이스 서버에 연결하거나 응답을 읽는 데 실패했어요.") from None
+
+        try:
+            if "RESULT" in data:
+                if not check_result(data["RESULT"]) and not rows:
+                    return [], 0
+                raise LookupErrorNEIS("요청한 목록을 끝까지 받지 못했어요.")
+
+            head = data[service][0]["head"]
+            for item in head:
+                if "RESULT" in item and not check_result(item["RESULT"]):
+                    if not rows:
+                        return [], 0
+                    raise LookupErrorNEIS("요청한 목록을 끝까지 받지 못했어요.")
+
+            total = int(
+                next(item["list_total_count"] for item in head if "list_total_count" in item)
+            )
+            page = data[service][1]["row"]
+            if not isinstance(page, list) or (not page and len(rows) &lt; total):
+                raise LookupErrorNEIS("나이스가 보낸 목록이 불완전해요.")
+        except (KeyError, IndexError, TypeError, ValueError, StopIteration):
+            raise LookupErrorNEIS("나이스 응답에서 목록이나 전체 건수를 읽을 수 없어요.") from None
+
+        rows.extend(page)
+        if not api_key or len(rows) &gt;= total:
+            return rows, total
+        params["pIndex"] += 1
+
+
+@st.cache_data(ttl=600, show_spinner=False)
+def load_teacher_lunch():
+    response = requests.get(TEACHER_CSV, timeout=12)
+    response.raise_for_status()
+    reader = csv.DictReader(StringIO(response.content.decode("utf-8-sig")))
+    required = {"MLSV_YMD", "MMEAL_SC_NM", "DDISH_NM"}
+    if not required.issubset(reader.fieldnames or []):
+        raise ValueError("필수 열 누락")
+    return [row for row in reader if row["MMEAL_SC_NM"].strip() == "중식"]
+
+
+def show_ranking(by_date, total, year, month):
+    dates_by_dish = defaultdict(set)
+    for day, dishes in by_date.items():
+        for dish in dishes:
+            name = ALLERGY_SUFFIX.sub("", dish).strip()
+            if name:
+                dates_by_dish[name].add(day)
+                
+    if not dates_by_dish:
+        st.info("순위를 집계할 메뉴 이름이 없어요.")
+        return
+
+    excluded = st.multiselect(
+        "반찬 순위에서 뺄 메뉴",
+        options=sorted(dates_by_dish),
+        help="우리 반에서 빼고 싶은 밥, 국 등의 메뉴를 골라 주세요.",
+    )
+    included = dates_by_dish.keys() - set(excluded)
+    if not included:
+        st.info("모든 메뉴를 제외했어요. 제외 목록에서 메뉴를 하나 빼면 순위가 보여요.")
+        return
+
+    ranked = sorted(included, key=lambda name: (-len(dates_by_dish[name]), name))
+    max_days = len(dates_by_dish[ranked[0]])
+    winners = [name for name in ranked if len(dates_by_dish[name]) == max_days]
+    first_place = "공동 1위" if len(winners) &gt; 1 else "1위"
+    st.write(f"{first_place} · {max_days}일 · {', '.join(winners)}")
+
+    title = (
+        "조회된 급식일의 반찬 순위"
+        if len(by_date) &lt; total
+        else f"{year}년 {month}월 반찬 순위"
+    )
+    top_ten = ranked[:10]
+    chart_rows = [
+        {"메뉴": name, "일수": len(dates_by_dish[name]), "표시": f"{len(dates_by_dish[name])}일"}
+        for name in top_ten
+    ]
+    base = alt.Chart(alt.Data(values=chart_rows)).encode(
+        y=alt.Y("메뉴:N", sort=top_ten, title=None),
+        x=alt.X(
+            "일수:Q",
+            title="나온 급식일 수",
+            axis=alt.Axis(tickMinStep=1, format="d"),
+            scale=alt.Scale(domain=[0, max_days + max(1, max_days * 0.2)]),
+        ),
+        tooltip=["메뉴:N", "일수:Q"],
+    )
+    bars = base.mark_bar()
+    labels = base.mark_text(align="left", baseline="middle", dx=5).encode(text="표시:N")
+    chart = (bars + labels).properties(title=title, height=32 * len(top_ten))
+    st.altair_chart(chart, use_container_width=True)
+
+    selected = st.selectbox("나온 날짜를 확인할 반찬", options=ranked)
+    days = sorted(dates_by_dish[selected])
+    st.write(f"{selected} · 총 {len(days)}일")
+    st.write(", ".join(day.isoformat() for day in days))
+
+
+def show_menu(rows, count_label, total, year, month):
+    by_date = defaultdict(list)
+    for row in rows:
+        day = datetime.strptime(row["MLSV_YMD"].strip(), "%Y%m%d").date()
+        dishes = MENU_BREAK.split(row["DDISH_NM"])
+        by_date[day].extend(dish.strip() for dish in dishes if dish.strip())
+
+    st.write(f"조회된 날짜 수 {len(by_date)}일 · {count_label} {total}건")
+    if not by_date:
+        st.info("이 기간에 등록된 중식이 없어요.")
+        return
+
+    table = [
+        {"날짜": day.isoformat(), "메뉴": " · ".join(by_date[day])}
+        for day in sorted(by_date)
+    ]
+    st.dataframe(table, hide_index=True, use_container_width=True)
+    show_ranking(by_date, total, year, month)
+
+
+st.title("두근두근 급식실")
+if st.button("급식실 열기"):
+    st.session_state["lunch_open"] = True
+
+if not st.session_state.get("lunch_open"):
+    st.stop()
+
+st.write("우리 학교 급식실에 오신 걸 환영합니다!")
+api_key = read_api_key()
+if not api_key:
+    st.info("키 없이 최대 5건만 보입니다")
+
+source = st.radio("자료 선택", ["나이스에서 조회", "선생님 준비 자료 불러오기"])
+
+if source == "선생님 준비 자료 불러오기":
+    st.subheader("당곡고등학교 · 2026년 9월 · 선생님 준비 자료")
+    try:
+        lunches = load_teacher_lunch()
+        show_menu(lunches, "준비 자료 중식 행 수", len(lunches), 2026, 9)
+    except (requests.RequestException, csv.Error, ValueError, KeyError, TypeError, AttributeError):
+        st.error("선생님 준비 자료를 불러오거나 읽을 수 없어요.")
+    st.stop()
+
+query = st.text_input("학교 이름", value="당곡고등학교").strip()
+if not query:
+    st.info("검색할 학교 이름을 입력해 주세요.")
+    st.stop()
+
+try:
+    schools, school_total = fetch_neis("schoolInfo", {"SCHUL_NM": query}, api_key)
+    if not schools:
+        st.info("이 이름으로 찾은 학교가 없어요. 학교 이름의 일부만 입력해 보세요.")
+        st.stop()
+    if len(schools) &lt; school_total:
+        st.caption(
+            f"검색된 학교 {school_total}곳 중 {len(schools)}곳을 표시해요. "
+            "찾는 학교가 없으면 이름을 더 자세히 입력해 보세요."
+        )
+
+    school = st.selectbox(
+        "학교 선택",
+        schools,
+        format_func=lambda s: f"{s['SCHUL_NM']} · {s['LCTN_SC_NM']} ({s['SD_SCHUL_CODE']})",
+    )
+    start, end = last_month()
+    st.subheader(f"{school['SCHUL_NM']} · {start.year}년 {start.month}월 중식")
+    lunches, meal_total = fetch_neis(
+        "mealServiceDietInfo",
+        {
+            "ATPT_OFCDC_SC_CODE": school["ATPT_OFCDC_SC_CODE"],
+            "SD_SCHUL_CODE": school["SD_SCHUL_CODE"],
+            "MMEAL_SC_CODE": "2",
+            "MLSV_FROM_YMD": start.strftime("%Y%m%d"),
+            "MLSV_TO_YMD": end.strftime("%Y%m%d"),
+        },
+        api_key,
+    )
+    show_menu(lunches, "응답의 전체 건수", meal_total, start.year, start.month)
+except LookupErrorNEIS as error:
+    st.error(f"조회 오류가 발생했어요. {error}")
+except (KeyError, TypeError, ValueError, AttributeError):
+    st.error("조회 오류가 발생했어요. 학교 정보나 급식 행의 형식을 확인할 수 없어요.")
+</pre></div>
+        <div class="codewrap code"><span class="label"><button type="button" class="fname">requirements.txt</button></span><button type="button" class="copy-btn">복사</button><pre>streamlit
+requests
+altair</pre></div>
+      </details>
+    </li>
+  </ol>
+
+  <h2>3. 1위를 원자료로 검산하기</h2>
+  <p>그래프와 날짜 목록은 앱이 같은 자료로 계산한 결과입니다. 두 곳에 모두 ‘12일’이라고 적혀 있어도 같은 날짜를 빠뜨렸을 수 있습니다. 이번에는 그래프를 보기 전에 원래 식단 표에서 날짜를 직접 찾습니다.</p>
+  <ol class="steps">
+    <li>
+      <span class="st">자료와 기간을 맞추세요</span>
+      <p><b>선생님 준비 자료 불러오기</b>를 고르고 ‘당곡고등학교 · 2026년 9월’과 ‘조회된 날짜 수 20일’을 확인하세요. 기준 결과와 비교할 때는 제외 목록을 비우세요. 원래 메뉴는 <a href="https://raw.githubusercontent.com/greatsong/dugeun-lunch-claude/main/data/danggok_lunch_202609.csv">선생님이 준비한 급식 파일</a>에서도 확인할 수 있습니다.</p>
+    </li>
+    <li>
+      <span class="st">식단 표에서 배추김치가 나온 날짜를 적으세요</span>
+      <p>9월 1일과 2일에는 배추김치가 있습니다. 3일에는 깍두기가 있고 4일에는 다시 배추김치가 있습니다. 첫 네 줄에서 적을 날짜는 1일, 2일, 4일입니다. 같은 방법으로 마지막 줄까지 확인하세요. 날짜마다 한 번씩만 적으세요.</p>
+    </li>
+    <li>
+      <span class="st">앱의 날짜 목록과 하나씩 대조하세요</span>
+      <p>‘나온 날짜를 확인할 반찬’에서 배추김치를 선택하세요. 종이에 적은 날짜와 화면의 날짜를 앞에서부터 하나씩 짝지으세요. 선생님이 준비한 <b>2026년 9월 당곡고 중식 20일의 1위는 배추김치이며, 제공 일수는 12일</b>입니다. 두 목록에서 짝이 없는 날짜가 있으면 그날 식단을 다시 읽으세요.</p>
+    </li>
+  </ol>
+
+  <h3 id="improve">③ 우리 반 기준으로 제외 항목을 바꿔 보세요</h3>
+  <p>같은 20일 자료로 이번에는 “밥과 국을 빼면 어떤 반찬이 자주 나왔을까?”를 조사하세요. 짝과 메뉴 목록을 읽고 ‘친환경현미밥’, ‘팽이장국’처럼 빼기로 한 이름을 고르세요. 선택 전후의 그래프에서 1위 이름과 일수를 읽고, 상위 10개에서 빠지거나 새로 들어온 메뉴도 찾아보세요. 1위가 같으면 그 결과를 그대로 적으세요.</p>
+  <p>다음에 앱을 열 때도 우리 반의 선택으로 시작하려면, 아래 대괄호에 실제로 고른 메뉴 이름을 넣어 같은 AI 대화에 보내세요. 앱을 갱신한 뒤 처음부터 선택된 이름과 방금 손으로 골랐을 때의 순위를 비교하세요.</p>
+  <div class="codewrap prompt"><span class="label">③ 개선 프롬프트</span><button type="button" class="copy-btn">복사</button><pre>우리 반은 [제외할 메뉴 이름들]을 반찬 순위에서 빼기로 했어. 현재 자료에 있는 이름만 제외 목록에 미리 선택해 줘. 화면에서 선택을 다시 바꿀 수 있게 해 줘. 날짜별 식단과 제공 일수를 세는 방법은 유지하고 고친 main.py 전체를 줘.</pre></div>
+  <div class="quote">
+    <div class="q">“무엇을 제외했고, 그 뒤에 어느 반찬의 순위가 달라졌습니까?”</div>
+    <span class="who"><img src="assets/img/arong.png" alt="" width="48" height="48" loading="lazy"><span><b>아롱의 기록</b> 학교와 기간, 제외한 이름을 적으세요. 남은 반찬 하나를 골라 순위와 제공 일수 중 무엇이 달라졌는지 짝에게 설명하세요.</span></span>
+  </div>
+
+  <h2>막힐 때 펼쳐 보세요</h2>
+  <details class="sample">
+    <summary>그래프가 보이지 않습니다</summary>
+    <p>첫 화면에 제목과 버튼만 보이면 <b>급식실 열기</b>를 누르세요. 조회된 날짜 수가 0이면 선생님 준비 자료로 바꾸세요. 날짜 표가 나오면 표 아래로 이동하세요. 모든 메뉴를 제외했다는 안내가 있으면 제외 목록에서 메뉴 하나를 빼세요.</p>
+    <p>실행 오류에 <code>ModuleNotFoundError</code>가 나오면 오류 줄 끝의 이름과 <code>requirements.txt</code>를 확인하세요. 기준 코드는 그래프를 그릴 때 <code>altair</code>를 사용합니다. AI가 다른 도구를 썼다면 내 파일에 맞는 설치 목록을 받아 같은 저장소에 저장하세요.</p>
+  </details>
+  <details class="sample">
+    <summary>같은 반찬이 이름 두 개로 나뉩니다</summary>
+    <p>각 이름을 골라 날짜를 하나씩 찾고, 그날의 원래 메뉴를 읽으세요. ‘두부조림 (5.6)’과 ‘두부조림’처럼 끝의 번호만 다르면 집계할 때 두 이름이 같아야 합니다. ‘간장두부조림’처럼 조리 방법이 적혀 있으면 우리 반에서 같은 반찬으로 셀지 먼저 정하세요.</p>
+    <div class="codewrap prompt"><span class="label">이름 두 개를 함께 세기로 했을 때</span><button type="button" class="copy-btn">복사</button><pre>우리 반은 ‘[표의 첫 이름]’과 ‘[표의 둘째 이름]’을 순위에서만 ‘[함께 쓸 이름]’으로 세기로 했어. 두 이름이 같은 날짜에 있어도 하루로 세 줘. 원래 식단 표에는 각각의 이름을 보여 줘.</pre></div>
+  </details>
+  <details class="sample">
+    <summary>제공 일수나 순위가 예상과 다릅니다</summary>
+    <p>비교하는 두 화면의 학교, 연월, 조회된 날짜 수, 제외 목록을 차례로 확인하세요. 나이스에서 일부만 조회한 결과와 9월 준비 자료는 날짜가 다를 수 있습니다. 조건이 같다면 일수가 다른 반찬 하나를 골라 앱 목록에만 있거나 표에만 있는 날짜를 찾으세요.</p>
+    <p>하루치 식단 전체가 막대 하나의 이름으로 보이면 메뉴 구분 기호가 그대로 남았는지 확인하세요. 제공 일수가 날짜 수보다 크면 그날 같은 반찬을 두 번 센 곳이 있는지 살펴보세요. AI에 수정을 요청할 때는 확인한 날짜 한 개와 그날의 메뉴, 기대한 일수를 함께 적으세요.</p>
+  </details>
+
+  <div class="callout warn">
+    <div class="h">AI 딴소리 멈추기 한 줄</div>
+    <p>AI가 ‘학생들이 가장 좋아하는 반찬’이라는 제목을 붙였다면 같은 대화에 다음 문장을 보내세요.</p>
+    <div class="codewrap prompt"><span class="label">순위의 뜻 바로잡기</span><button type="button" class="copy-btn">복사</button><pre>이 식단으로 확인할 수 있는 것은 반찬이 나온 날짜 수야. 선호도에 관한 문구를 빼고, 실제 조회 기간과 제공 일수로 반찬 순위를 설명해 줘.</pre></div>
+  </div>
+
+  <h2>오늘 정리</h2>
+  <p>2026년 9월 당곡고 중식에서 배추김치가 나온 날은 20일 중 12일입니다. 이 결과를 설명할 때는 어느 학교의 어느 기간을 살펴봤는지, 순위에서 무엇을 제외했는지 함께 밝힙니다. 나이스에서 키 없이 5건만 받았다면 “조회된 급식일 중 가장 자주 나온 반찬”이라고 말합니다.</p>
+  <p>다음 시간에 쓸 수 있도록 배포한 앱 주소와 오늘 고른 제외 항목을 기록하세요. 1위 반찬 이름 옆에 제공 일수와 원래 표에서 확인한 날짜 하나를 적으세요.</p>
+
+  <h2>확인 문제</h2>
+  <div class="quiz">
+    <div class="qq"><span class="qn">문제 1</span> 나이스 응답의 전체 건수는 20건이고 중식 표에는 5일만 보입니다. 이 그래프에 알맞은 제목을 고르세요.</div>
+    <div class="qitem">
+      <div class="qopts qopts-col">
+        <button type="button" class="opt">지난달 우리 학교 중식 전체의 반찬 순위</button>
+        <button type="button" class="opt">학생들이 지난달 가장 좋아한 반찬 순위</button>
+        <button type="button" class="opt" data-ok="1">조회된 급식일의 반찬 순위</button>
+      </div>
+      <div class="fb">그래프에 사용한 날짜는 5일입니다. 나머지 날짜에 어떤 반찬이 나왔는지에 따라 한 달 전체의 1위가 달라질 수 있습니다.</div>
+    </div>
+  </div>
+  <div class="quiz">
+    <div class="qq"><span class="qn">문제 2</span> 앱의 배추김치 목록에도, 원래 표에서 내가 적은 목록에도 날짜가 12개입니다. 검산을 마치려면 무엇을 확인해야 합니까?</div>
+    <div class="qitem">
+      <div class="qopts qopts-col">
+        <button type="button" class="opt" data-ok="1">두 목록의 날짜를 하나씩 짝지어 빠지거나 잘못 들어간 날이 있는지 확인합니다.</button>
+        <button type="button" class="opt">두 목록의 첫 날짜만 같으면 나머지 날짜도 맞다고 기록합니다.</button>
+        <button type="button" class="opt">그래프의 막대가 10개인지 다시 셉니다.</button>
+      </div>
+      <div class="fb">한 날짜가 빠지고 다른 날짜가 잘못 들어가도 목록의 길이는 12입니다. 두 목록에서 같은 날짜끼리 짝지으면 어느 날의 식단을 다시 읽어야 하는지 알 수 있습니다.</div>
+    </div>
+  </div>
+
+  <h2>다음 시간 예고</h2>
+  <p>다음 시간에는 대시보드를 처음 보는 친구에게 “가장 자주 나온 반찬을 찾아 주세요”라고 부탁합니다. 친구가 어디에서 1위를 찾았는지, 기간이나 일수를 읽으면서 무엇을 물었는지 관찰한 뒤 화면 한 곳을 고칩니다.</p>
+
+  <div class="pager">
+    <a class="prev" href="lesson02.html"><div class="dir">← 이전 · 2차시</div><div class="tt">지난달 우리 학교 점심을 빠짐없이 불러왔을까?</div></a>
+    <a class="next" href="lesson04.html"><div class="dir">4차시 · 다음 →</div><div class="tt">친구는 설명 없이도 반찬 1위를 바로 찾을 수 있을까?</div></a>
+  </div>
+</main>
+</div>
+
+<footer class="foot">두근두근 급식실 · 학생용 교재 · 3차시</footer>
+<script src="assets/copy.js"></script>
+<script src="assets/check.js"></script>
+<script src="assets/quiz.js"></script>
+<script src="assets/answer.js"></script>
+</body>
+</html>
