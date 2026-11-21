@@ -40,3 +40,7 @@ table.journey tr.feeling td { background:#e4eff1; }
 table.journey tr.pain td { background:#f6e7d8; }
 table.journey tr.chance td { background:#f9f3b9; }
 .journey-who { font-weight:700; color:#365746; margin:.2rem 0 0; }
+table.journey tr.curve td { background:#f8f6eb; padding:.3rem .2rem; }
+table.journey tr.curve th { position:relative; }
+table.journey .curve-scale { display:flex; flex-direction:column; justify-content:space-between; font-size:.75em; font-weight:400; color:#365746; margin-top:.4rem; gap:2.2rem; }
+.sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
