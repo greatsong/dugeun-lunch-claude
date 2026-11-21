@@ -45,7 +45,7 @@
 
 <h2>블록별 진행 노트</h2>
 <h3>1. 설명 없이 부탁하기 · 0~6분</h3>
-<div class="callout say"><p>“보는 사람은 먼저 학교와 연월, 제외 메뉴, 1위와 일수를 혼자 적으세요. 조회 결과의 맨 위로 돌아간 뒤 기기를 건네세요.” 인증키로 지난달을 조회합니다. 키가 없거나 조회가 막히면 당곡고 2026년 9월 준비 자료를 사용합니다.</p></div>
+<div class="callout say"><p>“보는 사람은 먼저 학교와 연월, 제외 메뉴, 1위와 일수를 혼자 적으세요. 조회 결과의 맨 위로 돌아간 뒤 기기를 건네세요.” 인증키로 지난달을 조회합니다. 키가 없거나 조회가 막히면 당곡고 2026년 10월 준비 자료를 사용합니다.</p></div>
 <div class="quote"><div class="q">“이 달에 가장 자주 나온 반찬을 찾아서, 이름과 며칠 나왔는지 말해 주세요.”</div><span class="who">두 친구에게 똑같이 읽어 줄 과제</span></div>
 
 <h3>2. 관찰 기록하기 · 6~16분</h3>
@@ -66,7 +66,7 @@
 <ul class="checklist">
 <li>채운 예에서는 ‘가장 자주 나온 반찬’ 소제목, 반찬 순위 그래프, 날짜별 중식 표 순서입니까? 다른 수정을 한 학생은 요청한 문구나 위치를 확인합니다.</li>
 <li>자료·학교·연월·제외 메뉴를 맞추면 공동 1위를 포함한 모든 이름과 일수가 수정 전과 같습니까?</li>
-<li>1위의 날짜 목록을 원래 표와 대조합니다. 준비 자료 20일, 제외 없음에서 배추김치가 12일입니까?</li>
+<li>1위의 날짜 목록을 원래 표와 대조합니다. 준비 자료 15일, 제외 없음에서 배추김치가 9일입니까?</li>
 </ul>
 <details class="sample"><summary>선생님이 실행해 확인한 4차시 기준 코드 · 그래프를 표 위로 옮긴 예</summary>
 <div class="codewrap code"><span class="label">main.py</span><button type="button" class="copy-btn">복사</button><pre>import csv
@@ -85,7 +85,7 @@ from streamlit.errors import StreamlitSecretNotFoundError
 NEIS_URL = "https://open.neis.go.kr/hub"
 TEACHER_CSV = (
     "https://raw.githubusercontent.com/greatsong/dugeun-lunch-claude/"
-    "main/data/danggok_lunch_202609.csv"
+    "main/data/danggok_lunch_202610.csv"
 )
 
 MENU_BREAK = re.compile(r"&lt;br\s*/?\s*&gt;", re.IGNORECASE)
@@ -271,7 +271,7 @@ if not api_key:
 source = st.radio("자료 선택", ["나이스에서 조회", "선생님 준비 자료 불러오기"])
 
 if source == "선생님 준비 자료 불러오기":
-    st.subheader("당곡고등학교 · 2026년 9월 · 선생님 준비 자료")
+    st.subheader("당곡고등학교 · 2026년 10월 · 선생님 준비 자료")
     try:
         lunches = load_teacher_lunch()
         show_menu(lunches, "준비 자료 중식 행 수", len(lunches), 2026, 9)
@@ -341,7 +341,7 @@ altair</pre></div>
 <tr><td>‘복잡해 보였다’만 적었습니다.</td><td>“어느 화면에서 손이 멈췄습니까? 어떤 말을 들었습니까?” 직접 본 행동을 적고 이유는 과제 뒤에 묻습니다.</td></tr>
 <tr><td>기다리다가 그래프를 가리켰습니다.</td><td>도움을 준 순간과 내용을 그대로 기록합니다. 친구가 혼자 한 마지막 행동을 확인하고 새 친구에게는 과제만 읽습니다.</td></tr>
 <tr><td>두 번째 친구에게 그래프 위치를 알려 주었습니다.</td><td>비교표에 단서를 줬다고 씁니다. 처음 보는 친구가 더 있으면 같은 조건으로 다시 관찰합니다.</td></tr>
-<tr><td>위치를 옮긴 뒤 12일이 13일이 되었습니다.</td><td>수정 전후의 자료와 제외 항목을 맞춥니다. 날짜 목록에서 달라진 하루를 찾아 식단과 대조하고 집계 기준을 복원합니다.</td></tr>
+<tr><td>위치를 옮긴 뒤 9일이 10일이 되었습니다.</td><td>수정 전후의 자료와 제외 항목을 맞춥니다. 날짜 목록에서 달라진 하루를 찾아 식단과 대조하고 집계 기준을 복원합니다.</td></tr>
 </tbody></table>
 <div class="codewrap prompt"><span class="label">수정 범위 다시 알려 주기</span><button type="button" class="copy-btn">복사</button><pre>아래 main.py에서 반찬을 세는 기준과 제외 메뉴 선택은 그대로 두고, 내가 요청한 화면 한 곳만 고쳐서 main.py 전체를 줘.</pre></div>
 
@@ -354,7 +354,7 @@ altair</pre></div>
 </tbody></table>
 
 <h2>프롬프트 검증 기록</h2>
-<p>2026-11-21 · Codex(gpt-6.2-astra) 2회, Gemini 4 Neon High 1회. 직전 코드를 첨부해 요청하고 Streamlit AppTest로 실행했습니다. 1~4차시 전체 12회 중 12회 성공했습니다. 채운 예에서 ‘가장 자주 나온 반찬’ 소제목을 확인했습니다. 기준 코드에는 소제목과 순위 다음에 식단 표가 표시됩니다. 친구가 혼자 찾았는지는 수업 중 두 관찰로 기록합니다.</p>
+<p>2026-11-21 · Codex(gpt-6.2-astra) 2회, Gemini 4 Neon High 1회. 직전 코드를 첨부해 요청하고 Streamlit AppTest로 실행했습니다. 1~4차시 전체 12회 중 12회 성공했습니다. 준비 자료를 2026년 10월로 바꾼 뒤 같은 코드 12개를 다시 실행해 15일 표와 1위 배추김치 9일을 확인했습니다. 채운 예에서 ‘가장 자주 나온 반찬’ 소제목을 확인했습니다. 기준 코드에는 소제목과 순위 다음에 식단 표가 표시됩니다. 친구가 혼자 찾았는지는 수업 중 두 관찰로 기록합니다.</p>
 
 <h2>확인 문제</h2>
 <div class="quiz"><div class="qq"><span class="qn">문제 1</span> 직접 관찰한 내용은 어느 쪽입니까?</div><div class="qitem"><div class="qopts qopts-col"><button type="button" class="opt">표가 길어 읽기 싫었을 것입니다.</button><button type="button" class="opt" data-ok="1">표 마지막 행에서 “다 세어야 해?”라고 물었습니다.</button></div><div class="fb">마지막으로 본 화면과 들은 말을 기록할 수 있습니다.</div></div></div>

@@ -55,7 +55,7 @@ if st.button("급식실 열기"):
 <div class="codewrap prompt"><span class="label">① 급식 조회 프롬프트</span><button type="button" class="copy-btn">복사</button><pre>지금 앱에 급식 조회를 더해 줘. 학교 이름을 입력하면 학교기본정보로 학교를 찾아 지역과 함께 고를 수 있게 해 줘. 기본값은 당곡고등학교야.
 고른 학교의 교육청 코드와 학교 코드로 한국 시간 기준 지난달 1일부터 말일까지 중식을 조회해서 날짜와 메뉴를 날짜순 표로 보여 줘. 조회된 날짜 수와 응답의 전체 건수도 함께 보여 줘.
 Secrets에 NEIS_API_KEY가 있으면 요청에 KEY로 넣고 한 번에 100건까지 받아 줘. 키가 없으면 '키 없이 최대 5건만 보입니다'라고 알려 줘. 키는 코드에 적지 말고 Secrets에서만 읽어 줘.
-조회가 막히거나 키가 없을 때 고를 수 있도록 '선생님 준비 자료 불러오기' 선택지도 만들어 줘. 파일 주소는 https://raw.githubusercontent.com/greatsong/dugeun-lunch-claude/main/data/danggok_lunch_202609.csv 이고, 열은 MLSV_YMD, MMEAL_SC_NM, DDISH_NM이며 메뉴는 &lt;br/&gt;로 나뉘어 있어. 이 자료를 쓸 때는 화면에 '당곡고등학교 · 2026년 9월 · 선생님 준비 자료'라고 표시해 줘.
+조회가 막히거나 키가 없을 때 고를 수 있도록 '선생님 준비 자료 불러오기' 선택지도 만들어 줘. 파일 주소는 https://raw.githubusercontent.com/greatsong/dugeun-lunch-claude/main/data/danggok_lunch_202610.csv 이고, 열은 MLSV_YMD, MMEAL_SC_NM, DDISH_NM이며 메뉴는 &lt;br/&gt;로 나뉘어 있어. 이 자료를 쓸 때는 화면에 '당곡고등학교 · 2026년 10월 · 선생님 준비 자료'라고 표시해 줘.
 급식이 없다는 응답과 조회 오류는 다른 안내 문구로 보여 줘. 제목과 버튼은 그대로 두고, 고친 main.py 전체와 requirements.txt를 줘.</pre></div>
 <div class="codewrap"><span class="label">① 프롬프트 끝에 붙이는 나이스 문서 발췌</span><button type="button" class="copy-btn">복사</button><pre>──── 아래는 나이스 교육정보 개방 포털 문서에서 복사한 부분 ────
 [학교기본정보] 요청 주소: https://open.neis.go.kr/hub/schoolInfo
@@ -77,7 +77,7 @@ Secrets에 NEIS_API_KEY가 있으면 요청에 KEY로 넣고 한 번에 100건�
 <ul class="checklist">
 <li>처음에 제목과 버튼만 보이면 ‘급식실 열기’를 누릅니다. 나이스에서 학교명과 지역, 조회 연월을 읽습니다.</li>
 <li>날짜순 표에서 하루의 메뉴 두 가지, 조회된 날짜 수와 전체 건수를 읽습니다. 키가 없으면 최대 5건 안내가 나오는지 확인합니다.</li>
-<li>준비 자료를 고르면 ‘당곡고등학교 · 2026년 9월 · 선생님 준비 자료’와 20일이 표시됩니까? 9월 1일 행에서 참치야채비빔밥과 배추김치를 찾습니다.</li>
+<li>준비 자료를 고르면 ‘당곡고등학교 · 2026년 10월 · 선생님 준비 자료’와 15일이 표시됩니까? 10월 1일 행에서 제육볶음과 배추김치를 찾습니다.</li>
 </ul>
 <details class="sample"><summary>선생님이 실행해 확인한 2차시 기준 코드</summary>
 <div class="codewrap code"><span class="label">main.py</span><button type="button" class="copy-btn">복사</button><pre>import csv
@@ -95,7 +95,7 @@ from streamlit.errors import StreamlitSecretNotFoundError
 NEIS_URL = "https://open.neis.go.kr/hub"
 TEACHER_CSV = (
     "https://raw.githubusercontent.com/greatsong/dugeun-lunch-claude/"
-    "main/data/danggok_lunch_202609.csv"
+    "main/data/danggok_lunch_202610.csv"
 )
 
 
@@ -213,7 +213,7 @@ if not api_key:
 source = st.radio("자료 선택", ["나이스에서 조회", "선생님 준비 자료 불러오기"])
 
 if source == "선생님 준비 자료 불러오기":
-    st.subheader("당곡고등학교 · 2026년 9월 · 선생님 준비 자료")
+    st.subheader("당곡고등학교 · 2026년 10월 · 선생님 준비 자료")
     try:
         lunches = load_teacher_lunch()
         show_menu(lunches, "준비 자료 중식 행 수", len(lunches))
@@ -268,7 +268,7 @@ requests</pre></div>
 <div class="codewrap code"><span class="label">앱 설정의 Secrets 칸</span><button type="button" class="copy-btn">복사</button><pre>NEIS_API_KEY = "…"</pre></div>
 
 <h3>4. 몇 건을 받았는지 판단하세요 · 40~50분</h3>
-<div class="callout say"><p>“서로 다른 날짜가 5개이고 전체가 19건입니다. 키 없이 받은 자료로 무엇을 말할 수 있습니까?” 전체 건수는 조건에 맞는 원래 행 수입니다. 같은 날짜에 두 행이 있으면 날짜별로 묶은 표에서는 한 줄로 보입니다. 이때는 묶기 전 받은 행 수를 확인합니다.</p></div>
+<div class="callout say"><p>“서로 다른 날짜가 5개이고 전체가 15건입니다. 키 없이 받은 자료로 무엇을 말할 수 있습니까?” 전체 건수는 조건에 맞는 원래 행 수입니다. 같은 날짜에 두 행이 있으면 날짜별로 묶은 표에서는 한 줄로 보입니다. 이때는 묶기 전 받은 행 수를 확인합니다.</p></div>
 <div class="codewrap prompt"><span class="label">받은 행 수를 따로 확인할 때</span><button type="button" class="copy-btn">복사</button><pre>나이스에서 실제로 받은 식단이 날짜별로 묶기 전에 몇 행인지 세어서 ‘받은 행 수’로 보여 줘. 조회된 날짜 수, 받은 행 수, 응답의 전체 건수를 표 위에서 함께 읽을 수 있게 해 줘.</pre></div>
 <div class="codewrap"><span class="label">조회 기록</span><button type="button" class="copy-btn">복사</button><pre>학교와 지역 □ · 조회한 연도와 월 □ · 자료 출처 □
 조회된 급식일은 □일입니다. 전체 □건 중 □건을 받았습니다.
@@ -276,7 +276,7 @@ requests</pre></div>
 
 <h2>예상 질문과 답</h2>
 <div class="callout ask"><div class="h">“다음 쪽을 열면 여섯째 날이 나옵니까?”</div><p>키가 없으면 쪽 번호를 바꾸어도 첫 5건까지만 받습니다. 인증키로 다시 조회한 뒤 전체 건수와 비교합니다.</p></div>
-<div class="callout ask"><div class="h">“다른 학교를 골랐는데 왜 9월 당곡고 식단입니까?”</div><p>준비 자료를 선택하면 앱이 정해진 파일을 읽습니다. 조회 기록에 파일의 학교와 연월을 적습니다.</p></div>
+<div class="callout ask"><div class="h">“다른 학교를 골랐는데 왜 10월 당곡고 식단입니까?”</div><p>준비 자료를 선택하면 앱이 정해진 파일을 읽습니다. 조회 기록에 파일의 학교와 연월을 적습니다.</p></div>
 
 <h2>예상 오류와 대응</h2>
 <table class="timetable">
@@ -297,10 +297,10 @@ requests</pre></div>
 </tbody></table>
 
 <h2>프롬프트 검증 기록</h2>
-<p>2026-11-21 · Codex(gpt-6.2-astra) 2회, Gemini 4 Neon High 1회. 직전 코드를 첨부해 요청하고 Streamlit AppTest로 실행했습니다. 1~4차시 전체 12회 중 12회 성공했습니다. 키 없이 최대 5건 안내, 준비 자료 제목과 20일 표를 확인했습니다. Codex 결과에서는 ‘급식실 열기’를 눌러야 조회 화면이 나왔습니다.</p>
+<p>2026-11-21 · Codex(gpt-6.2-astra) 2회, Gemini 4 Neon High 1회. 직전 코드를 첨부해 요청하고 Streamlit AppTest로 실행했습니다. 1~4차시 전체 12회 중 12회 성공했습니다. 준비 자료를 2026년 10월로 바꾼 뒤 같은 코드 12개를 다시 실행해 15일 표와 1위 배추김치 9일을 확인했습니다. 키 없이 최대 5건 안내, 준비 자료 제목과 15일 표를 확인했습니다. Codex 결과에서는 ‘급식실 열기’를 눌러야 조회 화면이 나왔습니다.</p>
 
 <h2>확인 문제</h2>
-<div class="quiz"><div class="qq"><span class="qn">문제 1</span> 키 없이 서로 다른 5일, 전체 19건이면 몇 건을 받았습니까?</div><div class="qitem"><div class="qopts qopts-col"><button type="button" class="opt" data-ok="1">5건입니다.</button><button type="button" class="opt">19건입니다.</button></div><div class="fb">키 없이 받은 5행에 날짜가 하나씩 있습니다.</div></div></div>
+<div class="quiz"><div class="qq"><span class="qn">문제 1</span> 키 없이 서로 다른 5일, 전체 15건이면 몇 건을 받았습니까?</div><div class="qitem"><div class="qopts qopts-col"><button type="button" class="opt" data-ok="1">5건입니다.</button><button type="button" class="opt">15건입니다.</button></div><div class="fb">키 없이 받은 5행에 날짜가 하나씩 있습니다.</div></div></div>
 <div class="quiz"><div class="qq"><span class="qn">문제 2</span> 실제 키를 어디에 입력합니까?</div><div class="qitem"><div class="qopts qopts-col"><button type="button" class="opt">공개 저장소의 main.py</button><button type="button" class="opt" data-ok="1">해당 앱의 Settings 안 Secrets</button></div><div class="fb">공개 코드에는 설정 이름만 씁니다.</div></div></div>
 
 <div class="pager">

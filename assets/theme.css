@@ -27,3 +27,16 @@
 .codewrap.prompt pre { background: #fffbef; color: #172b24; border: 2px solid #1d5d3d; font-size: 1.12em; line-height: 1.9; padding: 1.1rem 1.25rem; white-space: pre-wrap; word-break: keep-all; }
 .codewrap.prompt pre .blank { color: #9c4d31; font-weight: 700; background: #f6e7d8; border-radius: 4px; padding: 0 .15em; }
 .codewrap.prompt .label { background: #1d5d3d; }
+
+/* 고객 여정 지도: <table class="journey"> 머리 행 th.stage, 본문 행 th(행동·생각과 느낌·어려움·기회) + td */
+.journey-wrap { overflow-x:auto; margin:1rem 0 1.4rem; }
+table.journey { width:100%; min-width:640px; border-collapse:separate; border-spacing:6px; table-layout:fixed; font-size:.92em; }
+table.journey th, table.journey td { border:0; border-radius:8px; padding:.7rem .75rem; vertical-align:middle; line-height:1.55; word-break:keep-all; }
+table.journey thead th { background:#1d5d3d; color:#fff; text-align:center; font-weight:700; }
+table.journey thead th:first-child { background:transparent; }
+table.journey tbody th { background:transparent; color:#1d5d3d; text-align:left; width:7.5em; font-weight:700; }
+table.journey tr.doing td { background:#e7efdb; }
+table.journey tr.feeling td { background:#e4eff1; }
+table.journey tr.pain td { background:#f6e7d8; }
+table.journey tr.chance td { background:#f9f3b9; }
+.journey-who { font-weight:700; color:#365746; margin:.2rem 0 0; }
