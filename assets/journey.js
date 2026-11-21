@@ -1,10 +1,14 @@
 // 고객 여정 지도의 감정 곡선: <table class="journey" data-scores="1,-1,-2,0"> 안의 <tr class="curve">를
-// 단계별 점수(-2 나쁨 ~ 2 좋음)로 꺾은선 그래프로 바꾼다. 각 칸의 글은 점 옆 말풍선이 된다.
+// 단계별 점수(-2 나쁨 ~ 2 좋음, data-scores)와 감정 이름(data-emotions: 걱정·지침·답답함·당황·아쉬움·짜증·보통·궁금·기대·안심·기쁨·뿌듯함)으로 꺾은선 그래프를 그린다. 각 칸의 글은 점 옆 말풍선이 된다.
 var JOURNEY_BASE = (document.currentScript && document.currentScript.src.replace(/journey\.js.*$/, '')) || 'assets/';
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('table.journey[data-scores]').forEach(function (tb) {
     var row = tb.querySelector('tr.curve'); if (!row) return;
     var cells = Array.prototype.slice.call(row.querySelectorAll('td'));
+    var EMO = { '걱정': ['worried', -1], '지침': ['tired', -1], '답답함': ['frustrated', -1], '당황': ['confused', -1],
+      '아쉬움': ['disappointed', -1], '짜증': ['annoyed', -1], '보통': ['neutral', 0], '궁금': ['curious', 0],
+      '기대': ['hopeful', 1], '안심': ['relieved', 1], '기쁨': ['happy', 1], '뿌듯함': ['proud', 1] };
+    var emos = (tb.getAttribute('data-emotions') || '').split(',').map(function (v) { return v.trim(); });
     var scores = tb.getAttribute('data-scores').split(',').map(function (v) { return Math.max(-2, Math.min(2, parseFloat(v) || 0)); });
     var n = cells.length; if (!n) return;
     var CW = 240, H = 330, padT = 108, padB = 112;
@@ -18,8 +22,13 @@ document.addEventListener('DOMContentLoaded', function () {
     svg += '<polyline fill="none" stroke="#1d5d3d" stroke-width="6" stroke-linejoin="round" points="' + pts.map(function (p) { return p.join(','); }).join(' ') + '"/>';
     pts.forEach(function (p, i) {
       var s = scores[i], t = esc(cells[i].textContent.trim());
-      var ic = { '-2': 'm2', '-1': 'm1', '0': 'z0', '1': 'p1', '2': 'p2' }[String(Math.round(s))];
-      svg += '<image href="' + JOURNEY_BASE + 'emo/emo_' + ic + '.png" x="' + (p[0] - 30) + '" y="' + (p[1] - 30) + '" width="60" height="60"/>';
+      var e = EMO[emos[i]];
+      if (!e || (e[1] < 0 && s >= 0) || (e[1] > 0 && s <= 0) || (e[1] === 0 && s !== 0)) {
+        console.error('감정 곡선: 감정 이름이나 점수 부호를 확인하세요', emos[i], s);
+        svg += '<text x="' + p[0] + '" y="' + (p[1] + 8) + '" text-anchor="middle" font-size="22" fill="#b00">감정 확인</text>';
+      } else {
+        svg += '<image href="' + JOURNEY_BASE + 'emo/emo_' + e[0] + '.png" x="' + (p[0] - 30) + '" y="' + (p[1] - 30) + '" width="60" height="60"><title>' + emos[i] + '</title></image>';
+      }
       var lines = [t];
       if (t.length > 9) {  // 길면 가운데에 가까운 띄어쓰기에서 두 줄로
         var mid = t.length / 2, best = -1;
@@ -34,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
     svg += '</svg>';
     var td = document.createElement('td'); td.colSpan = n; td.className = 'curve-cell'; td.innerHTML = svg;
     var list = document.createElement('ul'); list.className = 'sr-only';
-    cells.forEach(function (c, i) { var li = document.createElement('li'); li.textContent = (i + 1) + '단계 감정 ' + scores[i] + ': ' + c.textContent.trim(); list.appendChild(li); });
+    cells.forEach(function (c, i) { var li = document.createElement('li'); li.textContent = (i + 1) + '단계 ' + (emos[i] || '') + '(' + scores[i] + '): ' + c.textContent.trim(); list.appendChild(li); });
     td.appendChild(list);
     cells.forEach(function (c) { c.remove(); });
     row.appendChild(td);
