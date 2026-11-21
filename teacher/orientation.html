@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="../assets/style.css">
   <link rel="stylesheet" href="../assets/theme.css">
   <link rel="stylesheet" href="../assets/print.css" media="print">
-  <script src="../assets/release.js"></script>
   <script src="../assets/gate.js"></script>
 </head>
 <body>
@@ -101,16 +100,8 @@
   </table>
   <p><a href="../training/index.html">교원 연수 안내</a>에는 연수 8차시가 한 페이지에 정리되어 있으며, 해당 교사 진행안으로 이동할 수 있습니다. 학생용 부록에는 나이스 문서 발췌, 오류가 났을 때 확인할 사항, 공개 전 점검표가 있습니다.</p>
 
-  <h2>5. 진도에 맞춘 공개와 교사 미리보기</h2>
-  <ol class="steps">
-    <li>교재 저장소의 <code>assets/release.js</code>에서 공개할 마지막 차시를 <code>RELEASED_LESSON</code>에 지정합니다. 예를 들어 값을 <code>1</code>로 두면 학생은 1차시까지 열 수 있습니다.</li>
-    <li>변경 사항을 저장소에 반영하고 GitHub Pages 배포가 끝나면, 교사 모드를 사용하지 않은 새 비공개 창에서 학생용 목차를 엽니다. 마지막 공개 차시와 그다음 차시를 하나씩 눌러 경계를 확인합니다.</li>
-    <li>교사가 다음 차시를 미리 볼 때는 교재 주소 뒤에 <code>?teacher=열쇠</code>를 붙입니다. ‘열쇠’ 부분에는 교재에 설정한 값을 넣고 전체 차시를 확인합니다. 학생에게는 이 매개변수가 없는 교재 주소를 안내합니다.</li>
-  </ol>
-  <div class="callout warn">
-    <div class="h">진도 잠금은 보안 기능이 아닙니다</div>
-    <p>공개 저장소에서는 누구나 HTML과 설정 파일을 읽을 수 있습니다. 공개 시점만 조절할 자료를 교재에 올리십시오. 실제 인증키, 학생 정보, 비공개 평가 자료는 진도를 잠근 페이지에도 넣지 않습니다.</p>
-  </div>
+  <h2>5. 공개 범위</h2>
+  <p>이 교재에는 차시 잠금이 없습니다. 모든 페이지가 처음부터 열려 있어 학생이 앞 차시를 다시 보거나 다음 차시를 미리 읽을 수 있습니다. 교재는 공개 저장소에 있으므로 누구나 HTML과 데이터 파일을 읽을 수 있습니다. 실제 인증키, 학생 정보, 비공개 평가 자료는 교재 저장소에 올리지 않습니다.</p>
 
   <h2>첫 수업 전 마지막 확인</h2>
   <ul class="checklist">
