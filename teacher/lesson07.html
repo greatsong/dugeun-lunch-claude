@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>7차시 · 린 스타트업의 반복 개선과 사용성 재점검 · 두근두근 급식실</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/print.css" media="print">
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <a class="brand" href="../index.html"><span class="chick" aria-hidden="true">🍱</span> 두근두근 <span class="a">급식실</span></a>
+  <span class="spacer"></span>
+  <a class="home" href="../lesson07.html">학생용 7차시 ↗</a>
+  <span class="badge teacher">교사용</span>
+</div></div>
+
+<div class="wrap">
+<main>
+  <span class="eyebrow">팀 프로젝트 · 7차시</span>
+  <h1>린 스타트업의 <span class="a">반복 개선과 사용성 재점검</span></h1>
+  <div class="under"></div>
+  <p class="lead">지난 시간에 친구가 첫 버튼은 혼자 찾았지만 네 단계를 읽다가 “컵은 어디에 놓아요?”라고 물었습니다. 이 기록이 있다면 어느 화면을 고쳐야 할까요? 오늘은 한 곳을 고친 뒤 앱을 처음 보는 친구에게 같은 과제를 줍니다. 교실 화면에 <a href="../lesson07.html">학생용 7차시 「고친 화면에서 새 친구는 혼자 해낼 수 있을까?」</a>를 엽니다.</p>
+
+  <div class="make-banner">
+    <div class="t">오늘 확인할 두 가지</div>
+    <ul>
+      <li>팀이 6차시 관찰 기록의 말이나 행동 하나를 짚고, 그 근거에 맞는 수정 한 가지를 선택합니다.</li>
+      <li>새 친구에게 같은 과제를 주고 같은 기준으로 판정해 달라진 행동과 남은 어려움을 설명합니다.</li>
+    </ul>
+  </div>
+  <p><b>수업 전 준비</b> · 팀별로 6차시 과제 문장, 관찰 기록, 수정 전 <code>main.py</code>와 팀 앱 주소, 5차시의 완료 기준을 준비합니다. 앱을 아직 쓰지 않았고 수정 시범도 보지 않은 친구를 팀별로 연결합니다.</p>
+
+  <h2>50분 진행 시간표</h2>
+  <table class="timetable">
+    <thead><tr><th scope="col">시간</th><th scope="col">활동</th><th scope="col">교사가 확인할 장면</th></tr></thead>
+    <tbody>
+      <tr><td>0~8분</td><td>지난 기록 읽기</td><td>팀이 과제 문장을 옮기고 고칠 근거가 된 말이나 행동에 밑줄을 긋습니다.</td></tr>
+      <tr><td>8~19분</td><td>① 한 곳만 고치도록 요청</td><td>친구가 막힌 곳과 수정할 곳을 함께 말하고 팀 대화에서 파일을 받습니다.</td></tr>
+      <tr><td>19~27분</td><td>② 수정한 화면 확인</td><td>팀원이 수정한 부분까지 가는 동작, 바뀐 동작, 그 뒤의 결과를 확인합니다.</td></tr>
+      <tr><td>27~37분</td><td>새 친구에게 같은 과제 주기</td><td>새 친구가 첫 화면에서 시작합니다. 팀원은 설명을 덧붙이지 않고 행동을 적습니다.</td></tr>
+      <tr><td>37~45분</td><td>수정 전후 기록 비교</td><td>같은 기준으로 두 사람의 멈춘 곳, 도움 여부, 마지막 화면을 비교합니다.</td></tr>
+      <tr><td>45~50분</td><td>개선과 방향 전환 판단</td><td>화면에서 확인한 사실과 현장에서 더 알아볼 점을 구분해 기록합니다.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>블록별 진행 노트</h2>
+  <h3>관찰한 행동으로 고칠 곳 고르기 · 0~8분</h3>
+  <div class="callout say">
+    <div class="h">“안 돼요”라고 하면 마지막으로 된 동작부터 묻습니다</div>
+    <p>“친구가 혼자 한 마지막 동작은 무엇입니까? 그다음에 화면에는 무엇이 보였습니까? 친구가 실제로 물은 말을 기록에서 찾아 읽으세요.”</p>
+  </div>
+  <p>첫 버튼을 누를 때 무엇이 나올지 몰랐다면 버튼 이름을 고칠 수 있습니다. 버튼은 혼자 찾았고 여러 안내를 함께 읽다가 컵에서 막혔다면 안내를 보여 주는 방식을 살펴봅니다. 친구가 과제를 혼자 마쳤고 수정 근거가 없으면 다른 친구에게 같은 과제를 한 번 더 줍니다.</p>
+
+  <h3>① 같은 팀 대화에서 한 곳만 수정 · 8~19분</h3>
+  <p>학생 페이지의 <a href="../lesson07.html#practice">팀 프롬프트</a>에 지난 과제와 관찰한 행동을 넣습니다. 팀원이 파일을 직접 수정했다면 현재 배포한 <code>main.py</code>를 먼저 알려 줍니다. 다음은 반납 안내 팀의 검증 예시입니다.</p>
+  <div class="codewrap prompt"><span class="label">① 채운 예 · 한 단계씩 보여 주기</span><button type="button" class="copy-btn">복사</button><pre>친구에게 '반납 순서를 찾아 주세요'라고 부탁했더니 버튼을 누른 뒤 네 단계를 한꺼번에 읽다가 컵을 어디에 두는지 다시 물었어.
+네 단계를 한 번에 보여 주지 말고 '다음 단계' 버튼을 누를 때마다 한 단계씩 나오게 바꿔 줘. 마지막 단계 뒤에는 '처음부터 다시 보기' 버튼을 보여 줘.
+그 한 곳만 고치고 바뀐 main.py 전체를 줘.</pre></div>
+  <p>받은 파일에서 반납 방법 네 문장을 6차시 파일과 대조합니다. 팀이 바꾸려던 것은 안내가 나오는 순서입니다. 수정 내용을 확인한 뒤 같은 팀 저장소에 반영하고, 배포를 기다리는 동안 전후 비교표의 ‘수정 전’ 칸을 채웁니다.</p>
+
+  <h3>② 화면에서 확인할 것 · 19~27분</h3>
+  <ul class="checklist">
+    <li>반납 안내 예시의 첫 화면에서 ‘반납 순서 보기’를 누르면 1/4단계와 남은 음식 안내가 표시됩니까?</li>
+    <li>‘다음 단계’를 누를 때마다 한 단계씩 바뀝니까? 3/4단계에서 컵을 어디에 어떻게 놓는지 읽을 수 있습니까?</li>
+    <li>4/4단계에서 ‘처음부터 다시 보기’를 누르면 1/4단계 안내로 돌아갑니까?</li>
+    <li>다른 과제를 정한 팀도 6차시 과제를 직접 끝내 보고, 고친 부분 앞뒤에서 필요한 동작이 되는지 확인했습니까?</li>
+  </ul>
+  <details class="sample">
+    <summary>선생님이 실행해 확인한 기준 코드 · 7차시 반납 안내 팀</summary>
+    <p>이 예시의 설치 목록은 6차시와 같습니다.</p>
+    <div class="codewrap code"><span class="label">main.py</span><button type="button" class="copy-btn">복사</button><pre>import streamlit as st
+
+st.title("처음 오는 1학년을 위한 식판 반납 안내")
+st.write("반납대 앞에서 아래 버튼을 눌러 보세요")
+
+steps = [
+    "남은 음식을 잔반통에 비워요.",
+    "수저는 수저통에 넣어요.",
+    "컵은 컵 바구니에 엎어 놓아요.",
+    "식판은 식판 수레에 겹쳐 놓아요.",
+]
+
+
+def show_step(number):
+    st.session_state.step = number
+
+
+step = st.session_state.get("step", 0)
+
+if step == 0:
+    st.button("반납 순서 보기", on_click=show_step, args=(1,))
+else:
+    st.write(f"**{step}/{len(steps)}단계** · {steps[step - 1]}")
+
+    if step &lt; len(steps):
+        st.button("다음 단계", on_click=show_step, args=(step + 1,))
+    else:
+        st.button("처음부터 다시 보기", on_click=show_step, args=(1,))
+</pre></div>
+    <div class="codewrap code"><span class="label">requirements.txt</span><button type="button" class="copy-btn">복사</button><pre>streamlit</pre></div>
+  </details>
+
+  <h3>새 친구에게 같은 과제 주기 · 27~37분</h3>
+  <div class="callout say">
+    <div class="h">지난 시간에 읽어 준 문장을 그대로 사용합니다</div>
+    <p>“새 친구의 기기에서 앱을 처음 여세요. 지난번에 ‘반납 순서를 찾아 주세요’라고 했다면 오늘도 그 말만 하세요. 친구가 어느 문장을 읽고 무엇을 누르는지 기록하세요.”</p>
+  </div>
+  <p>과제 문장, 시작 화면, 처음 제공하는 설명, 완료 기준을 6차시와 맞춥니다. 다른 점이 생기면 표에 적습니다. 친구가 질문한 뒤 답을 듣기 전에 스스로 찾은 경우에는 질문한 사실과 도움 없이 찾은 결과를 모두 남깁니다.</p>
+
+  <h3>같은 기준으로 전후 비교 · 37~45분</h3>
+  <p>학생 페이지에서 ‘수정 전후 비교표’를 열고 왼쪽에는 6차시 친구, 오른쪽에는 이번 친구가 실제로 한 일을 씁니다. 다음은 두 관찰을 기록하는 방법을 보여 주는 예입니다.</p>
+  <table class="daymap">
+    <caption>반납 안내 전후 비교 · 수업 설명용 예시</caption>
+    <thead><tr><th scope="col">항목</th><th scope="col">수정 전</th><th scope="col">수정 후</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">과제</th><td>반납 순서를 찾아 주세요.</td><td>반납 순서를 찾아 주세요.</td></tr>
+      <tr><th scope="row">멈춘 곳</th><td>네 단계를 읽다가 컵에서 멈췄습니다.</td><td>컵 안내를 읽고 다음 단계로 갔습니다. 멈춘 곳은 없었습니다.</td></tr>
+      <tr><th scope="row">도움 여부</th><td>컵을 어디에 놓는지 물어 팀원이 해당 문장을 가리켰습니다.</td><td>도움 없이 마지막 단계까지 눌렀습니다.</td></tr>
+      <tr><th scope="row">마지막 화면</th><td>네 단계가 함께 보이는 화면에서 마지막 안내를 읽었습니다.</td><td>4/4단계에서 식판 수레 안내를 읽었습니다.</td></tr>
+    </tbody>
+  </table>
+  <p>“두 친구 모두 마지막 안내를 읽었습니다. 그곳까지 혼자 갔는지는 어느 칸을 보면 알 수 있습니까?”라고 묻습니다. 두 번째 친구도 도움을 받았다면 받은 그대로 적습니다. 관찰자가 보지 못한 항목에는 ‘기록 없음’이라고 씁니다.</p>
+
+  <h3>개선과 방향 전환을 설명하는 말 · 45~50분</h3>
+  <div class="callout say">
+    <div class="h">화면을 고칠 근거와 처음 고른 문제를 다시 살필 근거를 묻습니다</div>
+    <p>“컵 놓을 곳을 찾는 친구가 네 문장을 읽다가 멈췄습니다. 한 단계씩 보여 준 뒤 같은 일로 다시 확인하는 것은 개선입니다. 그런데 실제 반납대에서 여러 차례 살펴보니 학생들은 표지를 읽고 순서대로 반납했고, 거듭 물은 것은 줄이 어디에서 시작되는가였습니다. 그렇다면 우리 팀이 처음에 정한 어려움을 다시 조사할 이유가 있습니다.”</p>
+  </div>
+  <p>린 스타트업에서 <b>피벗</b>은 관찰한 근거를 바탕으로 누구의 어떤 문제를 풀지 등 처음의 중요한 가정을 바꾸어 새 가설을 시험하는 방향 전환입니다. 한 친구가 버튼에서 멈춘 기록은 그 버튼을 살펴볼 근거입니다. 오늘은 같은 가설로 재점검을 마치고, 방향 전환을 제안한 팀에는 처음 예상과 어긋난 현장 행동과 더 물어볼 질문을 적게 합니다.</p>
+
+  <h2>예상 질문과 답</h2>
+  <div class="callout ask"><div class="h">“지난번 친구가 다시 하면 비교하기 쉽지 않습니까?”</div><p>“그 친구는 버튼 위치를 기억할 수 있습니다. 오늘 확인할 기준은 처음 쓰는 친구가 혼자 할 수 있는지입니다. 수정하는 모습을 보지 않은 친구에게 같은 과제를 부탁하세요.”</p></div>
+  <div class="callout ask"><div class="h">“새 친구도 같은 곳에서 멈추면 무엇을 제출합니까?”</div><p>“어느 문구에서 무엇을 물었고 마지막에 무엇을 봤는지 적으세요. 수정 뒤에도 필요한 도움을 찾은 것이 이번 재점검 결과입니다.”</p></div>
+
+  <h2>예상 오류와 대응</h2>
+  <table class="timetable">
+    <thead><tr><th scope="col">학생 화면이나 상황</th><th scope="col">교사의 질문과 조치</th></tr></thead>
+    <tbody>
+      <tr><td>새 친구에게 처음부터 1/4단계가 보입니다.</td><td>‘처음부터 다시 보기’는 첫 번째 안내로 돌아갑니다. 새 친구의 기기에서 앱 주소를 새로 열어 ‘반납 순서 보기’ 버튼부터 보이는지 확인합니다.</td></tr>
+      <tr><td>한 곳을 수정한 뒤 원래 되던 동작도 바뀌었습니다.</td><td>6차시 파일과 받은 파일을 팀 대화에서 대조합니다. 원래 되던 동작과 결과를 적고 요청한 한 곳만 반영한 파일을 받아 두 동작을 확인합니다.</td></tr>
+      <tr><td>‘다음 단계를 누르세요’라는 힌트를 덧붙였습니다.</td><td>어떤 안내를 했는지 기록합니다. 설명 없이 찾는 행동을 비교하려면 다른 새 친구에게 기존 과제 문장만 읽고 다시 관찰합니다.</td></tr>
+      <tr><td>친구 한 명이 사용한 결과로 반납 줄이 줄었다고 씁니다.</td><td>“교실에서 직접 본 행동은 무엇입니까?” 사용 기록에는 그 행동을 쓰고, 줄의 변화는 현장에서 확인할 질문으로 남깁니다.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>관찰 기준과 평가</h2>
+  <table class="timetable">
+    <thead><tr><th scope="col">관찰 기준</th><th scope="col">수업 중 확인할 근거</th></tr></thead>
+    <tbody>
+      <tr><td>수정 근거를 설명합니다.</td><td>6차시 기록의 말이나 행동을 읽고, 그때 쓰던 화면의 어느 부분을 왜 고쳤는지 짚습니다.</td></tr>
+      <tr><td>같은 조건에서 재점검합니다.</td><td>두 과제 문장과 시작 화면을 확인합니다. 새 친구에게 준 도움이 있으면 비교표에 기록합니다.</td></tr>
+      <tr><td>두 관찰에서 확인한 범위로 판단합니다.</td><td>같은 완료 기준을 사용해 달라진 점이나 여전히 어려운 점을 말합니다. 문제 자체를 바꾸려면 무엇을 더 관찰할지도 설명합니다.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>프롬프트 검증 기록</h2>
+  <p>2026년 11월 21일 Streamlit AppTest 실행 기록에서 6·7차시 반납 안내 팀 예시 두 건이 모두 성공했습니다(2/2). 7차시 예시에서는 ‘다음 단계’로 안내가 한 단계씩 바뀌고 마지막에 ‘처음부터 다시 보기’가 표시됐습니다. 새 친구가 혼자 찾았는지는 수업에서 관찰해 기록합니다.</p>
+
+  <h2>확인 문제</h2>
+  <div class="quiz">
+    <div class="qq"><span class="qn">문제 1</span> 새 친구의 행동을 지난 기록과 비교하려면 어떻게 시작합니까?</div>
+    <div class="qitem"><div class="qopts qopts-col">
+      <button type="button" class="opt">달라진 버튼을 눌러 보인 뒤 쉬운 과제를 줍니다.</button>
+      <button type="button" class="opt" data-ok="1">같은 첫 화면에서 지난 과제 문장을 읽고 같은 완료 기준으로 관찰합니다.</button>
+    </div><div class="fb">과제와 설명 조건을 맞추면 두 친구가 각각 어디까지 혼자 했는지 기록으로 비교할 수 있습니다.</div></div>
+  </div>
+  <div class="quiz">
+    <div class="qq"><span class="qn">문제 2</span> 처음 정한 문제를 바꿀지 검토할 근거는 무엇입니까?</div>
+    <div class="qitem"><div class="qopts qopts-col">
+      <button type="button" class="opt" data-ok="1">현장에서 여러 차례 보니 학생들은 순서대로 반납했고, 줄의 시작점을 거듭 물었습니다.</button>
+      <button type="button" class="opt">친구 한 명이 ‘다음 단계’ 버튼의 위치를 물었습니다.</button>
+    </div><div class="fb">현장에서 반복된 질문은 처음 예상한 어려움을 다시 조사할 근거입니다. 버튼의 위치를 물은 기록은 화면을 고치는 데 쓸 수 있습니다.</div></div>
+  </div>
+
+  <div class="pager">
+    <a class="prev" href="lesson06.html"><div class="dir">← 이전 · 6차시</div><div class="tt">우리 앱의 첫 화면에는 어떤 정보와 버튼이 필요할까?</div></a>
+    <a class="next" href="lesson08.html"><div class="dir">다음 · 8차시 →</div><div class="tt">우리가 완성한 앱으로 누가 무엇을 할 수 있을까?</div></a>
+  </div>
+</main>
+</div>
+<footer class="foot">두근두근 급식실 · 7차시 교사 진행안</footer>
+<script src="../assets/copy.js"></script>
+<script src="../assets/check.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/answer.js"></script>
+<script src="../assets/prompt.js"></script>
+</body>
+</html>
