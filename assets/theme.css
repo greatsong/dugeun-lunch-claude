@@ -1,0 +1,20 @@
+/* 두근두근 급식실 · DS 교재 스타일 위에 센터 초록 톤을 덮는다 (PPT 디자인과 같은 색·글꼴) */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+:root {
+  --gold: #a2ca37;          /* 센터 연두 */
+  --accent: #1d5d3d;        /* 진초록 */
+  --bg: #fbfcf7;
+  --card: #e7efdb;          /* PPT 카드 연두 */
+  --border: #c3d4c4;        /* PPT 구분선 */
+  --border-soft: #e4efe1;
+  --text: #172b24;          /* PPT 본문 */
+  --text-soft: #365746;
+  --muted: #6f8579;
+  --blue-soft: #e4eff1;     /* PPT 카드 연하늘 */
+  --code-bg: #18382d;       /* PPT 코드 상자 */
+  --code-text: #f3f7ef;
+  --shadow: 0 1px 4px rgba(29, 93, 61, 0.10);
+  --shadow-lg: 0 8px 24px rgba(29, 93, 61, 0.16);
+  --font: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+.topbar { background: rgba(251, 252, 247, 0.92); }

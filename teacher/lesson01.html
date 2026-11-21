@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>1차시 · 바이브코딩으로 만드는 첫 급식 앱과 배포 · 두근두근 급식실</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/print.css" media="print">
+  <script src="../assets/release.js"></script>
+  <script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <a class="brand" href="../index.html"><span class="chick" aria-hidden="true">🍱</span> 두근두근 <span class="a">급식실</span></a>
+  <span class="spacer"></span>
+  <a class="home" href="../lesson01.html">학생용 1차시 ↗</a>
+  <span class="badge teacher">교사용</span>
+</div></div>
+
+<div class="wrap">
+<main>
+  <span class="eyebrow">공통 수업 · 1차시 교사 진행안</span>
+  <h1>바이브코딩으로 만드는 <span class="a">첫 급식 앱과 배포</span></h1>
+  <div class="under"></div>
+  <p class="lead">오늘 수업은 짝의 휴대폰에서 마칩니다. 짝이 앱 주소를 열고 ‘급식실 열기’를 눌러 바뀐 환영 문구를 읽으면, 학생은 자신이 수정한 파일이 실제로 배포되었음을 확인할 수 있습니다. 교실 화면에는 <a href="../lesson01.html">학생용 1차시 「우리 학교 급식으로 어떤 앱을 만들 수 있을까?」</a>를 엽니다.</p>
+
+  <div class="make-banner">
+    <div class="t">오늘 확인할 두 가지</div>
+    <ul>
+      <li>학생이 공통 대시보드와 팀 앱에서 각각 누가 무엇을 할 수 있는지 설명합니다.</li>
+      <li>학생이 첫 앱을 배포하고, 짝의 기기에서 수정한 환영 문구를 확인합니다.</li>
+    </ul>
+  </div>
+  <p><b>수업 전 준비</b> · <a href="orientation.html">개강 전 안내</a>에 따라 학교망과 계정을 확인합니다. 교사는 시연할 앱 주소와 같은 앱의 GitHub 저장소 주소를 준비합니다. 휴대폰을 쓰기 어려운 학급에서는 짝의 학교 기기로 확인합니다. 1차시에는 나이스 인증키가 필요하지 않습니다.</p>
+
+  <h2>50분 진행 시간표</h2>
+  <table class="timetable">
+    <thead><tr><th scope="col">시간</th><th scope="col">활동</th><th scope="col">교사가 확인할 장면</th></tr></thead>
+    <tbody>
+      <tr><td>0~6분</td><td>여덟 차시 안내와 첫 앱 시연</td><td>학생이 버튼을 누르기 전과 누른 뒤에 보이는 것을 말합니다.</td></tr>
+      <tr><td>6~14분</td><td>① 첫 화면 요청</td><td>학생이 제목, 버튼, 환영 문구를 정한 뒤 두 파일을 준비합니다.</td></tr>
+      <tr><td>14~27분</td><td>공개 전 점검과 첫 배포</td><td>짝끼리 올릴 파일을 확인하고 저장소, 브랜치, 실행 파일을 선택합니다.</td></tr>
+      <tr><td>27~35분</td><td>② 화면에서 확인</td><td>학생이 자기 앱에서 버튼을 눌러 처음 요청한 문장을 읽습니다.</td></tr>
+      <tr><td>35~46분</td><td>③ 환영 문구 수정과 짝 확인</td><td>짝이 자기 기기에서 같은 앱 주소를 열고 새 문장을 읽습니다.</td></tr>
+      <tr><td>46~50분</td><td>결과 기록과 다음 차시 안내</td><td>학생이 앱 주소와 확인 결과를 남깁니다. 배포가 지연된 경우에는 멈춘 단계도 적습니다.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>블록별 진행 노트</h2>
+
+  <h3>여덟 차시 안내와 첫 앱 시연 · 0~6분</h3>
+  <div class="callout say">
+    <div class="h">첫 화면을 보여 주고 버튼 앞에서 잠시 멈춥니다</div>
+    <p>“지금 화면에서 무엇을 할 수 있습니까? 한 분이 ‘급식실 열기’를 눌러 주십시오. 방금 새로 보인 문장을 읽어 주십시오.” 학생의 답을 들은 뒤 오늘 만들 화면을 다시 보여 줍니다.</p>
+  </div>
+  <p>1~4차시에는 모두 같은 대시보드를 만들어 지난달 중식에서 자주 나온 반찬을 찾습니다. 5~8차시에는 팀마다 도울 사람과 급식실 문제를 정합니다. “식판 반납이 처음인 학생이라면 어느 순간에 어떤 안내가 필요하겠습니까?”라고 묻고 짝과 한 가지씩 이야기하게 합니다.</p>
+
+  <h3>① 첫 화면 요청 · 6~14분</h3>
+  <div class="callout say">
+    <div class="h">버튼을 눌러야 보이는 문장을 먼저 정합니다</div>
+    <p>“AI에게 요청하기 전에 첫 화면의 제목과 버튼을 짚어 보십시오. 환영 문구는 언제 나와야 합니까? 그 조건을 넣어 요청하겠습니다.” 학생이 학교에서 지정한 AI 도구에 새 대화를 열게 합니다. 4차시까지 이 대화에서 같은 앱을 고칩니다.</p>
+  </div>
+  <div class="codewrap prompt"><span class="label">① 첫 요청</span><button type="button" class="copy-btn">복사</button><pre>스트림릿에서 배포할 급식 앱을 만들어 줘. 첫 화면에 제목 ‘두근두근 급식실’과 버튼 ‘급식실 열기’를 보여 줘. 버튼을 눌렀을 때 ‘우리 학교 급식실에 오신 걸 환영합니다!’가 나오게 해 줘. 이 화면에 필요한 main.py와 requirements.txt를 각각 줘.</pre></div>
+  <p><code>main.py</code>에는 앱의 화면과 동작이, <code>requirements.txt</code>에는 배포할 때 설치할 도구의 이름이 들어갑니다. AI 답변에서 두 파일의 내용을 구분하고, 파일을 저장할 때 설명문과 코드 블록을 둘러싼 기호가 들어가지 않았는지 확인하게 합니다.</p>
+  <div class="codewrap prompt"><span class="label">AI가 요청하지 않은 기능까지 만들었을 때</span><button type="button" class="copy-btn">복사</button><pre>제목, 버튼 하나, 버튼을 누른 뒤의 환영 문구만 남겨 줘. 입력란과 다른 기능은 빼고 두 파일을 다시 줘.</pre></div>
+
+  <h3>공개 전 점검과 첫 배포 · 14~27분</h3>
+  <div class="callout say">
+    <div class="h">공개 저장소에 올리기 전에 짝이 파일을 함께 봅니다</div>
+    <p>“한 분은 첫 화면에 들어갈 글과 그림을 살펴보십시오. 다른 분은 올릴 파일의 이름과 내용을 확인하십시오. 세 항목을 모두 확인한 다음 저장소에 올립니다.”</p>
+  </div>
+  <ul class="checklist">
+    <li><b>개인정보</b> · 이름, 학번, 연락처를 받는 입력란이나 실제 개인정보가 있으면 삭제합니다. 계정과 저장소의 공개 이름도 확인합니다.</li>
+    <li><b>얼굴 사진</b> · 화면과 올릴 파일에 사람 얼굴이 나온 사진이 있으면 뺍니다.</li>
+    <li><b>인증키</b> · 두 파일에 실제 인증키나 비밀번호가 들어 있지 않은지 확인합니다. 오늘 올릴 파일은 <code>main.py</code>와 <code>requirements.txt</code>입니다.</li>
+  </ul>
+  <ol class="steps">
+    <li>GitHub에서 첫 저장소를 만들고 두 파일을 맨 위 폴더에 올립니다. 변경 사항을 저장하는 ‘Commit changes’를 선택합니다.</li>
+    <li><a href="https://share.streamlit.io/">Streamlit Community Cloud</a>에서 앱 만들기(New app 또는 Create app)를 선택합니다. 방금 파일을 올린 저장소와 브랜치를 고르고 실행 파일 경로에 <code>main.py</code>를 지정해 배포합니다.</li>
+    <li>배포를 기다리는 동안 교사가 준비한 저장소 주소와 앱 주소를 짝에게 보여 줍니다. 각각 열어 어느 쪽에서 버튼을 누를 수 있는지 찾게 합니다.</li>
+  </ol>
+
+  <h3>② 화면에서 확인 · 27~35분</h3>
+  <div class="callout say">
+    <div class="h">학생이 자기 앱의 동작을 먼저 확인합니다</div>
+    <p>“배포한 앱을 새 탭에서 여십시오. 버튼을 누르기 전 화면을 먼저 읽고, 버튼을 한 번 누른 뒤 무엇이 달라졌는지 짝에게 설명하십시오.”</p>
+  </div>
+  <h3>화면에서 확인할 것</h3>
+  <ul class="checklist">
+    <li>앱 주소의 도메인 끝이 <code>.streamlit.app</code>이고 첫 화면에 ‘두근두근 급식실’이라는 제목이 보입니까?</li>
+    <li>‘급식실 열기’ 버튼이 보이고, 아직 누르지 않았을 때는 환영 문구가 보이지 않습니까?</li>
+    <li>버튼을 누르면 ‘우리 학교 급식실에 오신 걸 환영합니다!’가 표시됩니까?</li>
+  </ul>
+  <details class="sample">
+    <summary>교사용 기준 코드 펼치기 · 실행 확인 전</summary>
+    <p>결과가 예상과 다를 때 펼칩니다. 마지막 줄이 버튼을 눌렀을 때만 실행되는지 확인합니다. 교사가 수업 전에 실행한 결과는 아래 검증표에 기록합니다.</p>
+    <div class="codewrap code"><span class="label">main.py</span><button type="button" class="copy-btn">복사</button><pre>import streamlit as st
+
+st.title("두근두근 급식실")
+if st.button("급식실 열기"):
+    st.write("우리 학교 급식실에 오신 걸 환영합니다!")</pre></div>
+    <div class="codewrap code"><span class="label">requirements.txt</span><button type="button" class="copy-btn">복사</button><pre>streamlit</pre></div>
+  </details>
+
+  <h3>③ 환영 문구 수정과 짝 확인 · 35~46분</h3>
+  <div class="callout say">
+    <div class="h">짝에게는 앱 주소만 보냅니다</div>
+    <p>“우리 반에서 쓰고 싶은 인사말을 하나 정하십시오. 바꾼 문장을 짝에게 미리 알려 주지 마십시오. 짝이 자기 휴대폰에서 읽어 주는 말로 수정 결과를 확인하겠습니다.”</p>
+  </div>
+  <div class="codewrap prompt"><span class="label">③ 개선 요청 · 대괄호 안을 바꾸어 씁니다</span><button type="button" class="copy-btn">복사</button><pre>버튼을 눌렀을 때 나오는 문구를 ‘[우리 반이 정한 인사말]’로 바꿔 줘. 제목과 버튼 이름은 그대로 두고, 수정한 main.py 전체를 줘.</pre></div>
+  <p>같은 저장소와 브랜치에서 <code>main.py</code>를 수정해 커밋합니다. 앱에 변경 사항이 반영되면 짝이 자기 휴대폰에서 배포 주소를 열고 버튼을 누릅니다. 짝이 읽은 문장을 수정한 파일의 문장과 대조합니다.</p>
+
+  <h3>결과 기록과 다음 차시 안내 · 46~50분</h3>
+  <div class="callout say">
+    <div class="h">직접 확인한 결과를 말하게 합니다</div>
+    <p>“어떤 주소를 열었습니까? 짝이 무엇을 눌렀고 어떤 문장을 읽었습니까? 앱 주소와 그 문장을 수업 기록에 남기십시오. 다음 시간에는 이 앱에서 학교를 검색하고 지난달 점심 메뉴를 날짜순으로 불러옵니다.”</p>
+  </div>
+  <p>배포가 지연된 학생에게는 교사의 예시 앱으로 버튼 동작을 확인하게 합니다. 자기 앱의 기록에는 멈춘 단계와 다음에 확인할 항목을 적게 하고, 2차시 시작 전에 해당 단계부터 함께 진행합니다.</p>
+
+  <h2>예상 질문과 답</h2>
+  <div class="callout ask">
+    <div class="h">“버튼은 보이는데 식단은 어디에 있습니까?”</div>
+    <p>“오늘은 다른 기기에서도 우리가 만든 버튼이 작동하는지 확인합니다. 학교와 날짜에 맞는 실제 식단은 2차시에 불러옵니다.”</p>
+  </div>
+  <div class="callout ask">
+    <div class="h">“문장을 고칠 때마다 새 앱을 만들어야 합니까?”</div>
+    <p>“처음 배포할 때 선택한 브랜치에 수정한 파일을 커밋하면 같은 앱에 반영됩니다. 처음 보낸 주소를 다시 열고 버튼을 눌러 보십시오.”</p>
+  </div>
+  <div class="callout ask">
+    <div class="h">“짝이 버튼을 눌렀으면 급식실에서 도움이 된다고 할 수 있습니까?”</div>
+    <p>“오늘 확인한 행동은 짝이 앱을 열고 새 문구를 읽었다는 것입니다. 급식실에서 도움이 되는지 알아보려면 누가 어떤 상황에서 이 기능을 쓰는지 더 살펴야 합니다.”</p>
+  </div>
+
+  <h2>예상 오류와 대응</h2>
+  <table class="timetable">
+    <thead><tr><th scope="col">학생 화면이나 상황</th><th scope="col">교사의 질문과 조치</th></tr></thead>
+    <tbody>
+      <tr><td>가입 또는 이메일 인증에서 멈춥니다.</td><td>“인증 메일을 어느 메일함에서 확인했습니까?” 주소와 스팸함을 확인합니다. 가입이나 동의 절차가 남았으면 짝이 자기 계정을 직접 조작하고 학생은 화면을 함께 확인합니다. 비밀번호나 복구 코드를 주고받지 않게 합니다.</td></tr>
+      <tr><td>학교망에서 사이트가 열리지 않습니다.</td><td>교재, GitHub, 배포 관리 화면, 배포한 앱 가운데 어느 주소에서 멈췄는지 확인합니다. 해당 도메인을 학교망 담당자에게 전달합니다. 예시 앱이 열리면 그 앱을 사용하고, 앱 도메인도 막혔으면 준비한 실행 전후 화면으로 관찰을 진행한 뒤 실제 기기 확인을 다시 합니다.</td></tr>
+      <tr><td>배포 화면에 저장소가 보이지 않습니다.</td><td>두 파일을 올린 GitHub 계정과 현재 연결한 계정이 같은지 확인합니다. 해당 저장소에 대한 접근을 허용했는지 살펴본 뒤 목록을 다시 엽니다.</td></tr>
+      <tr><td>배포가 실패하거나 앱 실행 중 오류가 납니다.</td><td>배포 기록에서 오류가 난 줄을 확인합니다. 파일을 찾지 못하면 브랜치와 <code>main.py</code> 경로를 대조합니다. 모듈을 찾지 못하면 같은 브랜치에 <code>requirements.txt</code>가 있는지, 그 안에 <code>streamlit</code>이 적혀 있는지 봅니다. 고친 파일을 커밋한 뒤 같은 앱을 엽니다.</td></tr>
+      <tr><td>짝의 휴대폰에 버튼 대신 코드가 보입니다.</td><td>“주소의 도메인을 읽어 보십시오. 두 주소 중 어느 쪽에서 버튼을 누를 수 있습니까?” <code>github.com</code>에서는 파일을 볼 수 있습니다. 배포한 앱을 열어 주소창의 <code>.streamlit.app</code> 주소를 다시 보내게 합니다.</td></tr>
+      <tr><td>짝이 이전 인사말을 읽습니다.</td><td>배포에 연결된 브랜치의 <code>main.py</code>에서 새 문장을 찾습니다. 최근 커밋이 반영된 뒤 짝의 기기에서 같은 주소를 새로 열고 버튼을 다시 누릅니다.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>관찰 기준과 평가</h2>
+  <table class="timetable">
+    <thead><tr><th scope="col">관찰 기준</th><th scope="col">수업 중 확인할 근거</th></tr></thead>
+    <tbody>
+      <tr><td>앱의 사용자와 할 일을 설명합니다.</td><td>공통 대시보드에서는 지난달 반찬을 찾는 일을, 팀 앱에서는 도울 사람과 그 사람이 할 일의 예를 말합니다.</td></tr>
+      <tr><td>요청한 조건을 화면에서 확인합니다.</td><td>‘급식실 열기’를 누르기 전후를 가리키며 환영 문구가 언제 나오는지 설명합니다.</td></tr>
+      <tr><td>수정한 앱의 배포를 확인합니다.</td><td>짝이 다른 기기에서 앱 주소를 열어 버튼을 누르고, 학생이 수정한 문장을 읽습니다. 교사의 예시 앱으로만 실습했다면 자기 앱 확인은 다음 수업에서 관찰합니다.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>프롬프트 검증 기록</h2>
+  <p>시안의 기록은 아직 비어 있습니다. 수업 전에 지정 도구의 새 대화에서 ①을 실행하고, 같은 대화에서 ③을 요청합니다. 받은 두 파일로 배포한 뒤 다른 기기에서 새 문구까지 확인한 경우에 ‘성공’으로 적습니다. 여러 번 시도하면 인쇄한 표에 회차별로 기록합니다.</p>
+  <table class="timetable">
+    <caption>1차시 프롬프트 검증표 · 미기록</caption>
+    <thead><tr><th scope="col">회차</th><th scope="col">사용 도구</th><th scope="col">날짜</th><th scope="col">성공 여부</th><th scope="col">확인 결과 또는 멈춘 단계</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">1회</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><th scope="row">2회</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><th scope="row">3회</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    </tbody>
+  </table>
+  <p>성공 횟수 ______회 / 전체 시도 ______회</p>
+
+  <div class="pager">
+    <a class="prev" href="orientation.html"><div class="dir">← 이전</div><div class="tt">개강 전 안내</div></a>
+    <a class="next" href="lesson02.html"><div class="dir">다음 →</div><div class="tt">2차시 · 나이스 급식 API를 활용한 학교 검색과 월별 중식 조회</div></a>
+  </div>
+</main>
+</div>
+
+<footer class="foot">두근두근 급식실 · 1차시 교사 진행안</footer>
+<script src="../assets/copy.js"></script>
+<script src="../assets/check.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/answer.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+/* 인쇄용: 상단 바·쪽 넘김·복사 버튼을 숨기고 표와 기록 칸만 깔끔하게 */
+@media print {
+  .topbar, .pager, .copy-btn, .foot { display: none !important; }
+  body { background: #fff; font-size: 12pt; }
+  details { display: block; }
+  details > summary { list-style: none; }
+  .codewrap pre { white-space: pre-wrap; }
+  a { color: inherit; text-decoration: none; }
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>개강 전 안내 · 교사용 · 두근두근 급식실</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/print.css" media="print">
+  <script src="../assets/release.js"></script>
+  <script src="../assets/gate.js"></script>
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <a class="brand" href="../index.html"><span class="chick" aria-hidden="true">🍱</span> 두근두근 <span class="a">급식실</span></a>
+  <span class="spacer"></span>
+  <a class="home" href="../start.html">학생용 시작 전 준비 ↗</a>
+  <span class="badge teacher">교사용</span>
+</div></div>
+
+<div class="wrap">
+<main>
+  <span class="eyebrow">교사용 · 수업 준비</span>
+  <h1>두근두근 급식실 <span class="a">개강 전 안내</span></h1>
+  <div class="under"></div>
+  <p class="lead">첫 시간에 학생은 급식 앱을 배포하고 짝의 휴대폰에서 버튼을 눌러 봅니다. 수업 전에 학생이 사용할 기기로 교재를 열고, 예시 앱의 버튼을 누르는 데까지 확인해 주십시오. 나이스 인증키와 한 달치 급식 자료는 2차시부터 사용합니다.</p>
+
+  <h2>1. 학교망에서 열어 볼 주소</h2>
+  <p>학생이 사용하는 무선망과 계정으로 확인합니다. 접속이 막힌 경우 아래에서 해당 주소와 용도를 골라 학교망 담당자에게 허용을 요청합니다. 배포 관리 화면과 학생이 여는 앱의 주소가 다르므로 두 곳을 각각 확인합니다.</p>
+  <table class="timetable">
+    <thead><tr><th scope="col">허용 요청 주소</th><th scope="col">용도</th><th scope="col">학교 기기에서 확인할 일</th></tr></thead>
+    <tbody>
+      <tr><td><a href="../index.html">greatsong.github.io/dugeun-lunch-claude/</a></td><td>GitHub Pages 웹 교재</td><td>학생용 목차에서 1차시를 엽니다.</td></tr>
+      <tr><td><a href="https://github.com/">github.com</a></td><td>학생 계정과 앱 저장소</td><td>로그인하고 수업용 저장소의 파일을 엽니다.</td></tr>
+      <tr><td><a href="https://share.streamlit.io/">share.streamlit.io</a></td><td>Streamlit Community Cloud 배포 관리</td><td>GitHub 계정을 연결하고 배포할 저장소를 선택할 수 있는지 확인합니다.</td></tr>
+      <tr><td><code>*.streamlit.app</code></td><td>배포한 앱 실행</td><td>교사가 미리 배포한 실제 앱 주소를 열고 버튼을 누릅니다. 별표는 앱마다 달라지는 주소 부분을 뜻합니다.</td></tr>
+      <tr><td><a href="https://open.neis.go.kr/">open.neis.go.kr</a></td><td>나이스 인증키 신청과 급식 조회</td><td>포털의 인증키 신청 화면을 엽니다. 교사 앱에서도 학교 검색과 중식 조회를 시험합니다.</td></tr>
+      <tr><td><code>raw.githubusercontent.com</code></td><td>수업용 급식 CSV 원본</td><td>아래의 준비 파일 주소를 열어 첫 줄의 열 이름과 첫 날짜를 확인합니다.</td></tr>
+      <tr><td>학교 승인 AI 도구의 접속·로그인 주소</td><td>앱 생성과 수정 요청</td><td>학교가 지정한 로그인 방식으로 새 대화를 열고 답변을 받을 수 있는지 확인합니다.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. 사용할 AI 도구와 학생 계정</h2>
+  <p>교사가 학교 승인 도구를 정하고 아래 내용을 학급 공지에 옮겨 주십시오. 입력한 내용은 이 페이지에 저장되지 않습니다. 작성한 안내를 보관하려면 인쇄하십시오.</p>
+  <table class="timetable">
+    <tbody>
+      <tr><th scope="row"><label for="ai-tool">학교 승인 AI 도구</label></th><td><input id="ai-tool" type="text" placeholder="도구 이름" autocomplete="off"></td></tr>
+      <tr><th scope="row"><label for="ai-address">학생 접속 주소</label></th><td><input id="ai-address" type="url" placeholder="https://" autocomplete="off"></td></tr>
+      <tr><th scope="row"><label for="ai-login">로그인 방법</label></th><td><input id="ai-login" type="text" placeholder="예: 학교 계정으로 로그인" autocomplete="off"></td></tr>
+    </tbody>
+  </table>
+  <p>가입 시기와 학생·보호자 동의 절차는 학교 방침에 따릅니다. GitHub의 가입 최소 연령은 만 13세이며, 사용하는 서비스별 연령 조건과 학교 계정의 외부 서비스 이용 권한도 확인합니다. 가입 승인을 기다리는 학생은 짝이 직접 조작하는 화면이나 교사 시연으로 참여할 수 있습니다.</p>
+  <ol class="steps">
+    <li><b>학생용 안내를 엽니다.</b> 학교망을 확인한 뒤 <a href="../start.html">시작 전 준비</a>를 안내합니다. 학생이 직접 인증 메일을 받을 수 있는 이메일을 준비합니다.</li>
+    <li><b>GitHub 계정을 준비합니다.</b> 이름과 학번이 드러나지 않는 공개용 별명을 정하고 이메일 인증을 마칩니다. 2단계 인증을 설정하고 복구 코드는 본인이 관리하는 곳에 보관합니다.</li>
+    <li><b>배포 계정을 연결합니다.</b> Streamlit Community Cloud에서 자신이 사용할 GitHub 계정으로 로그인하고 저장소 연결을 허용합니다. 첫 저장소를 만들고 두 파일을 올리는 활동은 1차시에 함께 합니다.</li>
+    <li><b>지정한 AI 도구에 접속합니다.</b> 새 대화를 열 수 있는지 확인합니다. 공용 기기에서는 사용을 마친 뒤 AI 도구, Streamlit, GitHub와 이메일에서 로그아웃합니다.</li>
+  </ol>
+
+  <h2>3. 2차시 급식 자료 준비</h2>
+  <h3>기본 방법 · 나이스 인증키로 조회합니다</h3>
+  <ol class="steps">
+    <li><a href="https://open.neis.go.kr/">나이스 교육정보 개방 포털</a>에 가입하고 로그인합니다. 포털의 <a href="https://open.neis.go.kr/portal/guide/actKeyPage.do">인증키 신청</a>에서 발급 절차를 진행합니다.</li>
+    <li>Streamlit Community Cloud에서 해당 앱의 설정을 열고 <b>Secrets</b>를 선택합니다. 아래 예시의 따옴표 안을 발급받은 값으로 바꾸어 저장합니다. 학생에게 화면을 공유하기 전에 설정 창을 닫습니다.</li>
+    <li>앱이 Secrets에서 <code>NEIS_API_KEY</code>를 읽도록 합니다. 학교명과 지역을 확인한 후 한국 시간 기준 지난달 1일부터 말일까지의 중식을 조회합니다. 서로 다른 급식일 수, 받은 행 수, 나이스 응답의 전체 건수를 화면에서 대조합니다.</li>
+  </ol>
+  <div class="codewrap code"><span class="label">앱 설정의 Secrets에 작성할 형식</span><button type="button" class="copy-btn">복사</button><pre>NEIS_API_KEY = "발급받은 인증키"</pre></div>
+  <div class="callout warn">
+    <div class="h">교사 키는 교사가 관리하는 앱에서 사용합니다</div>
+    <p>학생이 저장소나 앱 코드를 수정할 수 있으면 그 코드로 Secrets의 값을 읽을 수 있습니다. 교사 키를 학생 소유 앱에 대신 입력하거나 학급 공지로 배포하지 마십시오. 학교 방침에 따라 개별 키를 쓰는 경우에는 각 발급자가 자기 앱의 Secrets에 직접 입력합니다. 코드, AI 대화, 공개 게시물에 실제 키가 들어갔다면 해당 키를 폐기하고 새 키를 설정합니다.</p>
+  </div>
+
+  <h3>키가 없거나 조회가 막힐 때 · 준비한 CSV를 불러옵니다</h3>
+  <p>학생에게 키를 배포하기 어렵거나 나이스 접속·인증 오류로 조회할 수 없으면 아래 파일로 수업을 진행합니다. 파일은 <b>2026년 9월 당곡고등학교 중식 20일분</b>입니다. 화면에 ‘준비 파일 · 당곡고등학교 · 2026년 9월’이라고 표시해 학생이 실제 사용한 학교와 기간을 알 수 있게 합니다.</p>
+  <div class="codewrap code"><span class="label">선생님이 준비한 급식 파일 주소</span><button type="button" class="copy-btn">복사</button><pre>https://raw.githubusercontent.com/greatsong/dugeun-lunch-claude/main/data/danggok_lunch_202609.csv</pre></div>
+  <p><a href="https://raw.githubusercontent.com/greatsong/dugeun-lunch-claude/main/data/danggok_lunch_202609.csv">2026년 9월 당곡고 중식 CSV 열기</a></p>
+  <table class="timetable">
+    <thead><tr><th scope="col">파일의 열</th><th scope="col">수업 전 확인 예</th></tr></thead>
+    <tbody>
+      <tr><td><code>MLSV_YMD</code></td><td>급식일입니다. 첫 행의 <code>20260901</code>은 2026년 9월 1일입니다.</td></tr>
+      <tr><td><code>MMEAL_SC_NM</code></td><td>식사 구분입니다. 이 파일에는 ‘중식’이 들어 있습니다.</td></tr>
+      <tr><td><code>DDISH_NM</code></td><td>하루 메뉴입니다. 첫날의 ‘참치야채비빔밥’과 ‘팽이장국’ 사이에 있는 <code>&lt;br/&gt;</code>가 메뉴 구분 기호입니다.</td></tr>
+    </tbody>
+  </table>
+  <p>인증키 없이 나이스를 시험해 받은 최대 5건은 일부 자료일 수 있습니다. 이 자료로 시연할 때는 ‘조회된 급식일의 반찬 순위’라고 표시합니다. 한 달 전체의 순위를 구하는 실습은 인증키로 전체 건수를 확인하거나 위 CSV를 불러와 진행합니다. 인증키로 정상 조회했으나 급식이 없는 기간이라면 ‘조회한 기간에 중식 자료가 없습니다’라고 안내하고, 준비 파일을 열 때는 자료가 바뀌었음을 표시합니다.</p>
+
+  <h2>4. 교재 구성과 차시별 대응</h2>
+  <p>학생용 페이지와 교사 진행안은 차시 번호가 일대일로 대응합니다. 교실에는 학생용을 보여 주고 교사는 같은 번호의 진행안에서 시간표, 발문, 예상 오류와 관찰 기준을 확인합니다. 1~4차시는 같은 앱을 이어서 고치며, 5~8차시는 팀이 고른 문제로 앱을 만듭니다. 팀 앱은 급식 API 없이도 만들 수 있습니다.</p>
+  <table class="daymap">
+    <thead><tr><th scope="col">차시</th><th scope="col">학생 페이지</th><th scope="col">교사 진행안</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">1 · 공통</th><td><a href="../lesson01.html">우리 학교 급식으로 어떤 앱을 만들 수 있을까?</a></td><td><a href="lesson01.html">바이브코딩으로 만드는 첫 급식 앱과 배포</a></td></tr>
+      <tr><th scope="row">2 · 공통</th><td><a href="../lesson02.html">지난달 우리 학교 점심을 빠짐없이 불러왔을까?</a></td><td><a href="lesson02.html">나이스 급식 API를 활용한 학교 검색과 월별 중식 조회</a></td></tr>
+      <tr><th scope="row">3 · 공통</th><td><a href="../lesson03.html">지난달 우리 학교 급식에 가장 자주 나온 반찬은 무엇일까?</a></td><td><a href="lesson03.html">반찬별 제공 일수 집계와 대시보드 시각화</a></td></tr>
+      <tr><th scope="row">4 · 공통</th><td><a href="../lesson04.html">친구는 설명 없이도 반찬 1위를 바로 찾을 수 있을까?</a></td><td><a href="lesson04.html">디자인 씽킹의 사용자 관찰을 통한 대시보드 개선</a></td></tr>
+      <tr><th scope="row">5 · 팀</th><td><a href="../lesson05.html">우리 학교 급식에서 어떤 문제를 골라 누구를 도울까?</a></td><td><a href="lesson05.html">디자인 씽킹의 공감과 문제 정의, 페르소나와 여정 지도</a></td></tr>
+      <tr><th scope="row">6 · 팀</th><td><a href="../lesson06.html">우리 앱의 첫 화면에는 어떤 정보와 버튼이 필요할까?</a></td><td><a href="lesson06.html">린 스타트업의 최소 기능 제품(MVP) 구현과 사용성 관찰</a></td></tr>
+      <tr><th scope="row">7 · 팀</th><td><a href="../lesson07.html">고친 화면에서 새 친구는 혼자 해낼 수 있을까?</a></td><td><a href="lesson07.html">린 스타트업의 반복 개선과 사용성 재점검</a></td></tr>
+      <tr><th scope="row">8 · 팀</th><td><a href="../lesson08.html">우리가 완성한 앱으로 누가 무엇을 할 수 있을까?</a></td><td><a href="lesson08.html">팀 앱 완성과 짝 시연을 통한 핵심 기능 공유</a></td></tr>
+    </tbody>
+  </table>
+  <p><a href="../training/index.html">교원 연수 안내</a>에는 연수 8차시가 한 페이지에 정리되어 있으며, 해당 교사 진행안으로 이동할 수 있습니다. 학생용 부록에는 나이스 문서 발췌, 오류가 났을 때 확인할 사항, 공개 전 점검표가 있습니다.</p>
+
+  <h2>5. 진도에 맞춘 공개와 교사 미리보기</h2>
+  <ol class="steps">
+    <li>교재 저장소의 <code>assets/release.js</code>에서 공개할 마지막 차시를 <code>RELEASED_LESSON</code>에 지정합니다. 예를 들어 값을 <code>1</code>로 두면 학생은 1차시까지 열 수 있습니다.</li>
+    <li>변경 사항을 저장소에 반영하고 GitHub Pages 배포가 끝나면, 교사 모드를 사용하지 않은 새 비공개 창에서 학생용 목차를 엽니다. 마지막 공개 차시와 그다음 차시를 하나씩 눌러 경계를 확인합니다.</li>
+    <li>교사가 다음 차시를 미리 볼 때는 교재 주소 뒤에 <code>?teacher=열쇠</code>를 붙입니다. ‘열쇠’ 부분에는 교재에 설정한 값을 넣고 전체 차시를 확인합니다. 학생에게는 이 매개변수가 없는 교재 주소를 안내합니다.</li>
+  </ol>
+  <div class="callout warn">
+    <div class="h">진도 잠금은 보안 기능이 아닙니다</div>
+    <p>공개 저장소에서는 누구나 HTML과 설정 파일을 읽을 수 있습니다. 공개 시점만 조절할 자료를 교재에 올리십시오. 실제 인증키, 학생 정보, 비공개 평가 자료는 진도를 잠근 페이지에도 넣지 않습니다.</p>
+  </div>
+
+  <h2>첫 수업 전 마지막 확인</h2>
+  <ul class="checklist">
+    <li>학생 기기에서 교재, 지정 AI 도구, GitHub와 배포 관리 화면을 열었습니다.</li>
+    <li>학교 방침에 따라 계정 준비 시기와 동의 절차를 안내했습니다.</li>
+    <li>교사의 예시 앱을 다른 기기에서 열고 ‘급식실 열기’를 눌러 보았습니다.</li>
+    <li>공개 전 점검에서 개인정보 입력란, 얼굴 사진, 코드 속 인증키를 어디서 확인할지 정했습니다.</li>
+    <li>2차시에 사용할 인증키 조회와 준비 파일 경로를 확인했습니다.</li>
+  </ul>
+
+  <div class="pager">
+    <a class="prev" href="../index.html"><div class="dir">← 목차</div><div class="tt">두근두근 급식실</div></a>
+    <a class="next" href="lesson01.html"><div class="dir">다음 →</div><div class="tt">1차시 교사 진행안</div></a>
+  </div>
+</main>
+</div>
+
+<footer class="foot">두근두근 급식실 · 교사용 개강 전 안내</footer>
+<script src="../assets/copy.js"></script>
+<script src="../assets/check.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/answer.js"></script>
+</body>
+</html>
